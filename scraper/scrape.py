@@ -160,6 +160,81 @@ def passt_zum_bier(angebot, bier):
     return any(alias in text for alias in bier["aliase"])
 
 
+def analysiere_gebinde(titel, preis_str):
+    """
+    Versucht aus dem Angebotstitel die Gebindegroesse zu erkennen
+    (z.B. '20 x 0,5 l') und daraus die Gesamtmenge in Litern sowie
+    den Preis pro Liter zu berechnen.
+
+    Erkennt gaengige Schreibweisen:
+      '20 x 0,5 l', '20x0,5l', '24 x 0,33', '6x0,33 l',
+      '0,5 l', '5 l Fass'
+
+    Gibt ein dict zurueck mit:
+      anzahl, einzelgroesse_l, gesamt_l, gebinde_typ, preis_pro_liter
+    Felder, die sich nicht ermitteln lassen, sind None.
+    """
+    ergebnis = {
+        "anzahl": None,
+        "einzelgroesse_l": None,
+        "gesamt_l": None,
+        "gebinde_typ": None,
+        "preis_pro_liter": None,
+    }
+    if not titel:
+        return ergebnis
+
+    t = titel.lower().replace(",", ".")
+
+    # Muster 1: "20 x 0.5 l" / "24x0.33" / "6 x 0.33l"
+    m = re.search(r"(\d{1,2})\s*[x\u00d7]\s*(\d[.,]?\d*)\s*l?", t)
+    if m:
+        ergebnis["anzahl"] = int(m.group(1))
+        ergebnis["einzelgroesse_l"] = float(m.group(2))
+    else:
+        # Muster 2: nur Einzelgroesse "0.5 l" / "5 l"
+        m2 = re.search(r"(\d[.,]?\d*)\s*l\b", t)
+        if m2:
+            ergebnis["anzahl"] = 1
+            ergebnis["einzelgroesse_l"] = float(m2.group(1))
+
+    # Gesamtmenge
+    if ergebnis["anzahl"] and ergebnis["einzelgroesse_l"]:
+        ergebnis["gesamt_l"] = round(
+            ergebnis["anzahl"] * ergebnis["einzelgroesse_l"], 3)
+
+    # Gebinde-Typ aus Stichwoertern bzw. Anzahl ableiten
+    if "fass" in t or "partyfass" in t:
+        ergebnis["gebinde_typ"] = "Fass"
+    elif "dose" in t or "dosen" in t:
+        ergebnis["gebinde_typ"] = "Dose"
+    elif "sixpack" in t or "six-pack" in t:
+        ergebnis["gebinde_typ"] = "Sixpack"
+    elif ergebnis["anzahl"]:
+        if ergebnis["anzahl"] >= 12:
+            ergebnis["gebinde_typ"] = "Kasten"
+        elif ergebnis["anzahl"] == 6:
+            ergebnis["gebinde_typ"] = "Sixpack"
+        elif ergebnis["anzahl"] == 1:
+            ergebnis["gebinde_typ"] = "Einzelflasche"
+        else:
+            ergebnis["gebinde_typ"] = "Mehrpack"
+    elif "kasten" in t or "kiste" in t:
+        ergebnis["gebinde_typ"] = "Kasten"
+
+    # Preis pro Liter
+    if ergebnis["gesamt_l"] and preis_str:
+        try:
+            preis = float(str(preis_str).replace(",", "."))
+            if ergebnis["gesamt_l"] > 0:
+                ppl = preis / ergebnis["gesamt_l"]
+                ergebnis["preis_pro_liter"] = ("%.2f" % ppl).replace(".", ",")
+        except ValueError:
+            pass
+
+    return ergebnis
+
+
 def baue_angebot(angebot, bier, plz_ort):
     """Formt einen marktguru-Treffer in unser einheitliches Format um."""
     # Haendlername steht je nach Antwort unter advertisers[0].name
@@ -177,18 +252,27 @@ def baue_angebot(angebot, bier, plz_ort):
         preis = None
 
     titel = angebot.get("description") or angebot.get("title") or bier["name"]
+    titel = str(titel).strip()
 
     # Gueltigkeit
     gueltig_bis = angebot.get("validityEndDate") or angebot.get("validTo")
+
+    # Gebinde aus dem Titel analysieren (Anzahl, Groesse, Typ, Literpreis)
+    gebinde = analysiere_gebinde(titel, preis)
 
     return {
         "bier_id": bier["id"],
         "bier_name": bier["name"],
         "markt_name": haendler,
         "markt_ort": plz_ort,
-        "titel": str(titel).strip(),
+        "titel": titel,
         "preis": preis,
         "gueltig_bis": gueltig_bis,
+        "gebinde_typ": gebinde["gebinde_typ"],
+        "anzahl": gebinde["anzahl"],
+        "einzelgroesse_l": gebinde["einzelgroesse_l"],
+        "gesamt_l": gebinde["gesamt_l"],
+        "preis_pro_liter": gebinde["preis_pro_liter"],
         "quelle": "marktguru",
     }
 

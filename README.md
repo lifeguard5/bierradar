@@ -22,7 +22,14 @@ Hand eintragen.
    Postleitzahlen rund um Breuna (Breuna, Volkmarsen, Warburg, Wolfhagen).
 3. Die Treffer landen in `data/angebote.json`.
 4. Die Web-App (`index.html`) zeigt diese Angebote schön aufbereitet an –
-   mit Markt, Preis und „gültig bis".
+   mit Markt, Preis, Gebindegröße und „gültig bis".
+
+Die App erkennt aus dem Angebotstext automatisch die Gebindegröße
+(z. B. „20 × 0,5 l" Kasten oder „6 × 0,33 l" Sixpack) und berechnet den
+**Preis pro Liter**. So lassen sich Kästen, Sixpacks und Dosen fair
+vergleichen – die Liste ist nach Liter-Preis sortiert, das günstigste
+Angebot steht oben. Ein zweiter Filter erlaubt es, nur eine Gebindeart
+(z. B. nur Kästen) anzuzeigen.
 
 > **Warum marktguru und nicht REWE/EDEKA direkt?**
 > Die Webseiten der großen Handelsketten sind technisch gegen automatische

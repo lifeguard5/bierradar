@@ -5,34 +5,44 @@
   "fehler": [],
   "angebote": [
     {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "REWE",
-      "markt_ort": "Breuna",
+      "bier_id": "veltins", "bier_name": "Veltins",
+      "markt_name": "REWE", "markt_ort": "Breuna",
       "titel": "Veltins Pilsener 20 x 0,5 l (zzgl. Pfand)",
-      "preis": "13,99",
-      "gueltig_bis": "2026-05-31",
-      "quelle": "marktguru"
+      "preis": "13,99", "gueltig_bis": "2026-05-31",
+      "gebinde_typ": "Kasten", "anzahl": 20, "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0, "preis_pro_liter": "1,40", "quelle": "marktguru"
     },
     {
-      "bier_id": "erdinger",
-      "bier_name": "Erdinger Weißbier",
-      "markt_name": "EDEKA",
-      "markt_ort": "Volkmarsen",
+      "bier_id": "veltins", "bier_name": "Veltins",
+      "markt_name": "Getränke Quelle", "markt_ort": "Warburg",
+      "titel": "Veltins Pilsener 24 x 0,33 l",
+      "preis": "12,49", "gueltig_bis": "2026-05-29",
+      "gebinde_typ": "Kasten", "anzahl": 24, "einzelgroesse_l": 0.33,
+      "gesamt_l": 7.92, "preis_pro_liter": "1,58", "quelle": "marktguru"
+    },
+    {
+      "bier_id": "erdinger", "bier_name": "Erdinger Weißbier",
+      "markt_name": "EDEKA", "markt_ort": "Volkmarsen",
       "titel": "Erdinger Weißbier hell 20 x 0,5 l (zzgl. Pfand)",
-      "preis": "15,49",
-      "gueltig_bis": "2026-05-28",
-      "quelle": "marktguru"
+      "preis": "15,49", "gueltig_bis": "2026-05-28",
+      "gebinde_typ": "Kasten", "anzahl": 20, "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0, "preis_pro_liter": "1,55", "quelle": "marktguru"
     },
     {
-      "bier_id": "hasseroeder",
-      "bier_name": "Hasseröder",
-      "markt_name": "Penny",
-      "markt_ort": "Warburg",
+      "bier_id": "hasseroeder", "bier_name": "Hasseröder",
+      "markt_name": "Penny", "markt_ort": "Warburg",
       "titel": "Hasseröder Premium Pils 20 x 0,5 l",
-      "preis": "11,99",
-      "gueltig_bis": "2026-05-26",
-      "quelle": "marktguru"
+      "preis": "11,99", "gueltig_bis": "2026-05-26",
+      "gebinde_typ": "Kasten", "anzahl": 20, "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0, "preis_pro_liter": "1,20", "quelle": "marktguru"
+    },
+    {
+      "bier_id": "veltins", "bier_name": "Veltins",
+      "markt_name": "Herkules", "markt_ort": "Wolfhagen",
+      "titel": "Veltins Pilsener Sixpack 6 x 0,33 l",
+      "preis": "4,99", "gueltig_bis": "2026-06-02",
+      "gebinde_typ": "Sixpack", "anzahl": 6, "einzelgroesse_l": 0.33,
+      "gesamt_l": 1.98, "preis_pro_liter": "2,52", "quelle": "marktguru"
     }
   ]
 }

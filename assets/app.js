@@ -8,15 +8,17 @@
 (function () {
   "use strict";
 
-  let aktiverFilter = "alle";   // "alle" oder eine bier_id
+  let bierFilter    = "alle";   // "alle" oder eine bier_id
+  let gebindeFilter = "alle";   // "alle" oder ein Gebinde-Typ
   let angebote = [];
   let biere = [];
   let quelle = "";
 
-  const elListe  = document.getElementById("ergebnisliste");
-  const elFilter = document.getElementById("filterleiste");
-  const elStand  = document.getElementById("standzeile");
-  const elInfo   = document.getElementById("info-inhalt");
+  const elListe   = document.getElementById("ergebnisliste");
+  const elFilter  = document.getElementById("filterleiste");
+  const elGebinde = document.getElementById("gebindeleiste");
+  const elStand   = document.getElementById("standzeile");
+  const elInfo    = document.getElementById("info-inhalt");
 
   ladeDaten();
 
@@ -39,7 +41,8 @@
       biere    = bierDaten.biere || [];
 
       zeigeStand(angDaten.stand, angDaten.fehler);
-      baueFilter();
+      baueBierFilter();
+      baueGebindeFilter();
       zeigeInfo(angDaten);
       zeigeListe();
     } catch (e) {
@@ -56,10 +59,7 @@
 
   // --- Stand-Anzeige -------------------------------------------------
   function zeigeStand(stand, fehler) {
-    if (!stand) {
-      elStand.textContent = "Stand unbekannt";
-      return;
-    }
+    if (!stand) { elStand.textContent = "Stand unbekannt"; return; }
     const d = new Date(stand);
     const datum = d.toLocaleDateString("de-DE",
       { day: "2-digit", month: "2-digit", year: "numeric" });
@@ -72,25 +72,59 @@
     elStand.textContent = text;
   }
 
-  // --- Filterleiste --------------------------------------------------
-  function baueFilter() {
+  // --- Bier-Filter ---------------------------------------------------
+  function baueBierFilter() {
     elFilter.innerHTML = "";
-    elFilter.appendChild(chip("alle", "Alle Biere", angebote.length));
+    elFilter.appendChild(bierChip("alle", "Alle Biere", angebote.length));
     biere.forEach(function (b) {
       const anzahl = angebote.filter(function (a) {
         return a.bier_id === b.id;
       }).length;
-      elFilter.appendChild(chip(b.id, b.name, anzahl));
+      elFilter.appendChild(bierChip(b.id, b.name, anzahl));
     });
   }
 
-  function chip(id, text, anzahl) {
+  function bierChip(id, text, anzahl) {
     const el = document.createElement("button");
-    el.className = "filter-chip" + (id === aktiverFilter ? " aktiv" : "");
+    el.className = "filter-chip" + (id === bierFilter ? " aktiv" : "");
     el.innerHTML = text + '<span class="anzahl">' + anzahl + "</span>";
     el.addEventListener("click", function () {
-      aktiverFilter = id;
-      baueFilter();
+      bierFilter = id;
+      baueBierFilter();
+      zeigeListe();
+    });
+    return el;
+  }
+
+  // --- Gebinde-Filter ------------------------------------------------
+  function baueGebindeFilter() {
+    // welche Gebinde-Typen kommen ueberhaupt vor?
+    const typen = neueMenge(angebote.map(function (a) {
+      return a.gebinde_typ;
+    }).filter(Boolean)).sort();
+
+    // Gebindeleiste nur zeigen, wenn es mind. 2 Typen gibt
+    if (typen.length < 2) {
+      elGebinde.innerHTML = "";
+      elGebinde.style.display = "none";
+      return;
+    }
+    elGebinde.style.display = "flex";
+    elGebinde.innerHTML = "";
+    elGebinde.appendChild(gebindeChip("alle", "Alle Gebinde"));
+    typen.forEach(function (typ) {
+      elGebinde.appendChild(gebindeChip(typ, typ));
+    });
+  }
+
+  function gebindeChip(id, text) {
+    const el = document.createElement("button");
+    el.className = "filter-chip filter-chip-klein"
+      + (id === gebindeFilter ? " aktiv" : "");
+    el.textContent = text;
+    el.addEventListener("click", function () {
+      gebindeFilter = id;
+      baueGebindeFilter();
       zeigeListe();
     });
     return el;
@@ -98,26 +132,31 @@
 
   // --- Ergebnisliste -------------------------------------------------
   function zeigeListe() {
-    const gefiltert = aktiverFilter === "alle"
-      ? angebote
-      : angebote.filter(function (a) { return a.bier_id === aktiverFilter; });
+    let gefiltert = angebote.slice();
+    if (bierFilter !== "alle") {
+      gefiltert = gefiltert.filter(function (a) {
+        return a.bier_id === bierFilter;
+      });
+    }
+    if (gebindeFilter !== "alle") {
+      gefiltert = gefiltert.filter(function (a) {
+        return a.gebinde_typ === gebindeFilter;
+      });
+    }
 
     if (gefiltert.length === 0) {
       elListe.innerHTML = leererZustand(
         "\uD83C\uDF7A",
         "Kein Angebot gefunden",
-        aktiverFilter === "alle"
-          ? "Aktuell ist keines der beobachteten Biere im Angebot. Schau morgen wieder vorbei!"
-          : "Fuer diese Sorte ist gerade kein Angebot bekannt. Andere Sorte probieren?"
+        "Fuer diese Auswahl ist gerade kein Angebot bekannt. "
+          + "Anderen Filter probieren?"
       );
       return;
     }
 
-    // nach Markt sortiert, guenstigster Preis zuerst innerhalb des Markts
+    // guenstigster Liter-Preis zuerst (Angebote ohne Literpreis ans Ende)
     gefiltert.sort(function (a, b) {
-      const m = a.markt_name.localeCompare(b.markt_name, "de");
-      if (m !== 0) return m;
-      return preisZahl(a.preis) - preisZahl(b.preis);
+      return literZahl(a.preis_pro_liter) - literZahl(b.preis_pro_liter);
     });
 
     elListe.innerHTML = "";
@@ -133,6 +172,24 @@
 
     const preis = a.preis
       ? '<span class="karte-preis">' + escHtml(a.preis) + " \u20AC</span>"
+      : "";
+
+    // Gebinde-Etikett (z.B. "Kasten") + Mengenangabe
+    let gebindeEtikett = "";
+    if (a.gebinde_typ) {
+      let mengentext = "";
+      if (a.anzahl && a.einzelgroesse_l) {
+        mengentext = " \u00B7 " + a.anzahl + " \u00D7 "
+          + zahlText(a.einzelgroesse_l) + " l";
+      }
+      gebindeEtikett = '<span class="karte-gebinde">'
+        + escHtml(a.gebinde_typ) + mengentext + "</span>";
+    }
+
+    // Liter-Preis als Vergleichszahl
+    const literPreis = a.preis_pro_liter
+      ? '<span class="karte-liter">' + escHtml(a.preis_pro_liter)
+        + " \u20AC / Liter</span>"
       : "";
 
     const titel = a.titel && a.titel !== a.bier_name
@@ -154,6 +211,7 @@
         '<div class="karte-markt">' + escHtml(a.markt_name) + "</div>" +
         '<div class="karte-ort">' + escHtml(a.markt_ort || "") + "</div>" +
         titel +
+        '<div class="karte-meta">' + gebindeEtikett + literPreis + "</div>" +
         '<div class="karte-fuss">' +
           '<span class="badge badge-auto">Aktuelles Angebot</span>' +
           gueltigZeile +
@@ -182,6 +240,9 @@
         '<div class="info-zeile"><span>Datenquelle</span><strong>' +
         escHtml(quelle) + "</strong></div>";
     }
+    html +=
+      '<p class="info-klein">Sortiert nach Preis pro Liter \u2013 ' +
+      'so lassen sich Kaesten, Sixpacks und Dosen fair vergleichen.</p>';
     if (daten.fehler && daten.fehler.length) {
       html +=
         '<p class="info-warnung">Hinweis: ' + daten.fehler.length +
@@ -207,10 +268,14 @@
       { day: "2-digit", month: "2-digit" });
   }
 
-  function preisZahl(p) {
-    if (!p) return 9999;
+  function literZahl(p) {
+    if (!p) return 99999;
     const n = parseFloat(String(p).replace(",", "."));
-    return isNaN(n) ? 9999 : n;
+    return isNaN(n) ? 99999 : n;
+  }
+
+  function zahlText(n) {
+    return String(n).replace(".", ",");
   }
 
   function neueMenge(arr) {

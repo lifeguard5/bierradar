@@ -151,6 +151,41 @@ body {
 }
 .filter-chip.aktiv .anzahl { opacity: 0.85; }
 
+/* zweite, kleinere Filterreihe fuer Gebinde */
+.gebindeleiste { padding-top: 0; }
+.filter-chip-klein {
+  font-size: 0.76rem;
+  padding: 6px 13px;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* Meta-Zeile auf der Karte: Gebinde + Liter-Preis */
+.karte-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+}
+.karte-gebinde {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--gruen-tief);
+  background: #e7f3e9;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+.karte-liter {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--grau);
+}
+.karte-liter::before {
+  content: "\2248\00A0";
+  opacity: 0.6;
+}
+
 /* ---------- Ergebnisliste ----------------------------------------- */
 .ergebnisliste {
   display: flex;
@@ -289,6 +324,11 @@ body {
 .info-warnung {
   margin-top: 8px;
   color: #9a7411 !important;
+}
+.info-klein {
+  margin-top: 8px;
+  font-size: 0.76rem !important;
+  font-style: italic;
 }
 
 /* leerer Zustand */

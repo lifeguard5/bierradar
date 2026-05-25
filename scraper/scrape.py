@@ -47,6 +47,16 @@ PAUSE = 0.6                          # kurze Pause zwischen Abfragen (hoeflich)
 MARKTGURU_BASIS = "https://www.marktguru.de"
 MARKTGURU_API = "https://api.marktguru.de/api/v1/offers/search"
 
+# marktguru-API-Schluessel.
+# marktguru ist eine Webseite ohne Login - diese Schluessel sind keine
+# Geheimnisse, sondern oeffentliche Webseiten-Zugangsdaten, die die Seite
+# selbst beim Laden an jeden Besucher mitgibt. Sie sind seit Jahren stabil.
+# Sollte marktguru sie doch einmal aendern, versucht der Scraper als
+# Rueckfallebene, neue Schluessel automatisch von der Webseite zu holen
+# (siehe hole_api_schluessel).
+MG_CLIENTKEY = "WU/RH+PMGDi+gkZer3WbMelt6zcYHSTytNB7VpTia90="
+MG_APIKEY = "8Kk+pmbf7TgJ9nVj2cXeA7P5zBGv8iuutVVMRfOfvNE="
+
 # Browser-aehnliche Header
 HEADERS = {
     "User-Agent": (
@@ -66,22 +76,35 @@ def lade_json(pfad):
 
 
 # --- API-Schluessel beschaffen ----------------------------------------
-def hole_api_schluessel():
-    """
-    marktguru bindet zwei Schluessel (x-clientkey, x-apikey) in seine
-    Webseite ein. Wir laden eine Seite und ziehen die Schluessel per
-    Mustersuche heraus.
+def teste_schluessel(clientkey, apikey):
+    """Prueft mit einer kleinen Testabfrage, ob ein Schlusselpaar funktioniert."""
+    try:
+        kopf = dict(HEADERS)
+        kopf["x-clientkey"] = clientkey
+        kopf["x-apikey"] = apikey
+        r = requests.get(
+            MARKTGURU_API,
+            params={"as": "web", "limit": 1, "offset": 0,
+                    "q": "Bier", "zipCode": "34479"},
+            headers=kopf, timeout=TIMEOUT)
+        return r.status_code == 200
+    except Exception:
+        return False
 
-    ANPASSEN, falls marktguru die Einbindung aendert.
-    Gibt (clientkey, apikey) zurueck oder wirft eine Exception.
+
+def lese_schluessel_von_webseite():
     """
-    # Die Schluessel stecken in den ausgelieferten JavaScript-Dateien.
-    # Wir holen zuerst die Startseite und sammeln daraus die JS-Dateien.
-    start = requests.get(MARKTGURU_BASIS, headers=HEADERS, timeout=TIMEOUT)
-    start.raise_for_status()
+    Rueckfallebene: Versucht, die API-Schluessel direkt aus der
+    marktguru-Webseite und ihren JavaScript-Dateien zu lesen.
+    Gibt (clientkey, apikey) zurueck oder (None, None).
+    """
+    try:
+        start = requests.get(MARKTGURU_BASIS, headers=HEADERS, timeout=TIMEOUT)
+        start.raise_for_status()
+    except Exception:
+        return None, None
 
     js_dateien = re.findall(r'src="([^"]+\.js)"', start.text)
-    # auch absolute Pfade beruecksichtigen
     kandidaten = []
     for j in js_dateien:
         if j.startswith("http"):
@@ -89,15 +112,15 @@ def hole_api_schluessel():
         elif j.startswith("/"):
             kandidaten.append(MARKTGURU_BASIS + j)
 
-    # Schluesselmuster: Base64-aehnliche Zeichenketten, die auf "=" enden
-    muster_client = re.compile(r'["\']?x-?clientkey["\']?\s*[:=]\s*["\']([^"\']+)["\']', re.I)
-    muster_api = re.compile(r'["\']?x-?apikey["\']?\s*[:=]\s*["\']([^"\']+)["\']', re.I)
+    # Schluessel sind Base64-aehnliche Zeichenketten, die auf "=" enden.
+    # Mehrere Muster, um verschiedene Schreibweisen abzudecken.
+    muster_client = re.compile(
+        r'(?:x-?clientkey|clientKey)["\']?\s*[:=]\s*["\']([A-Za-z0-9+/]{20,}=*)["\']', re.I)
+    muster_api = re.compile(
+        r'(?:x-?apikey|apiKey)["\']?\s*[:=]\s*["\']([A-Za-z0-9+/]{20,}=*)["\']', re.I)
 
-    # zuerst die Startseite selbst pruefen
     quellen = [start.text]
-
-    # dann die JS-Dateien (die ersten paar reichen meist)
-    for url in kandidaten[:12]:
+    for url in kandidaten[:15]:
         try:
             r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
             if r.ok:
@@ -117,14 +140,41 @@ def hole_api_schluessel():
                 apikey = m.group(1)
         if clientkey and apikey:
             break
-
-    if not (clientkey and apikey):
-        raise RuntimeError(
-            "marktguru-API-Schluessel nicht gefunden. "
-            "Vermutlich hat marktguru die Webseite umgebaut - "
-            "hole_api_schluessel() in scrape.py muss angepasst werden."
-        )
     return clientkey, apikey
+
+
+def hole_api_schluessel():
+    """
+    Liefert ein funktionierendes (clientkey, apikey)-Paar fuer die
+    marktguru-API.
+
+    Vorgehen:
+      1. Die fest hinterlegten Schluessel testen (Normalfall, da stabil).
+      2. Falls die nicht mehr funktionieren: aktuelle Schluessel von der
+         marktguru-Webseite auslesen und ebenfalls testen.
+
+    Wirft eine Exception, wenn beide Wege scheitern.
+    """
+    # 1) Feste Schluessel - der uebliche Fall
+    if teste_schluessel(MG_CLIENTKEY, MG_APIKEY):
+        print("API-Schluessel: feste Schluessel funktionieren.")
+        return MG_CLIENTKEY, MG_APIKEY
+
+    print("Feste Schluessel funktionieren nicht - versuche, "
+          "aktuelle von der Webseite zu lesen ...")
+
+    # 2) Rueckfallebene: von der Webseite lesen
+    clientkey, apikey = lese_schluessel_von_webseite()
+    if clientkey and apikey and teste_schluessel(clientkey, apikey):
+        print("API-Schluessel: frisch von der Webseite geholt.")
+        return clientkey, apikey
+
+    raise RuntimeError(
+        "Keine funktionierenden marktguru-API-Schluessel gefunden. "
+        "marktguru hat moeglicherweise die API geaendert - "
+        "die Schluessel MG_CLIENTKEY / MG_APIKEY in scrape.py "
+        "muessen aktualisiert werden."
+    )
 
 
 # --- marktguru abfragen -----------------------------------------------
@@ -289,11 +339,11 @@ def main():
     # 1) API-Schluessel holen
     try:
         clientkey, apikey = hole_api_schluessel()
-        print("API-Schluessel erfolgreich geholt.")
     except Exception as e:
         print(f"FEHLER beim Holen der Schluessel: {e}", file=sys.stderr)
-        # Ergebnis mit Fehlerhinweis schreiben, App zeigt dann eine Meldung
-        schreibe_ergebnis([], [str(e)])
+        # Bisherige Angebote NICHT loeschen - nur den Fehler vermerken,
+        # damit die App weiterhin die letzten bekannten Angebote zeigt.
+        behalte_bei_fehler(str(e))
         sys.exit(1)
 
     # 2) Fuer jedes Bier und jede PLZ abfragen
@@ -339,6 +389,21 @@ def schreibe_ergebnis(angebote, fehler):
     }
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(ergebnis, f, ensure_ascii=False, indent=2)
+
+
+def behalte_bei_fehler(fehlertext):
+    """
+    Wird aufgerufen, wenn der Scraper keine neuen Daten holen konnte.
+    Behaelt die zuletzt bekannten Angebote bei und vermerkt nur den
+    Fehler - so bleibt die App nutzbar statt komplett leer zu sein.
+    """
+    try:
+        alt = lade_json(OUTPUT_FILE)
+        alte_angebote = alt.get("angebote", [])
+    except Exception:
+        alte_angebote = []
+    schreibe_ergebnis(alte_angebote, [fehlertext])
+    print(f"Hinweis: {len(alte_angebote)} bisherige Angebote beibehalten.")
 
 
 if __name__ == "__main__":

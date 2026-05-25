@@ -1,26 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Bierradar Scraper
-=================
-Liest die Angebote der in data/markets.json konfigurierten Maerkte aus,
-filtert nach den in data/biere.json definierten Biersorten und schreibt
-das Ergebnis nach data/angebote.json.
+Bierradar Scraper  –  Datenquelle: marktguru.de
+================================================
+Statt die schwer zugaenglichen Einzel-Webseiten von REWE, EDEKA & Co.
+auszulesen, nutzt dieser Scraper das Prospekt-Portal marktguru.de.
+marktguru sammelt die Angebote praktisch aller deutschen Supermaerkte
+und stellt eine Suche pro Postleitzahl bereit.
 
-Wird automatisch per GitHub Actions ausgefuehrt (siehe .github/workflows/scrape.yml).
+Vorgehen:
+  1. API-Schluessel automatisch von der marktguru-Webseite holen.
+  2. Fuer jedes gesuchte Bier und jede konfigurierte Postleitzahl
+     die marktguru-Angebotssuche abfragen.
+  3. Treffer einsammeln, Duplikate entfernen, nach data/angebote.json
+     schreiben.
 
-WICHTIG / WARTUNG:
-- Supermarkt-Webseiten aendern regelmaessig ihre Struktur. Wenn ein Markt
-  ploetzlich keine Treffer mehr liefert, muss die jeweilige parse_*-Funktion
-  angepasst werden. Die Stellen sind unten klar markiert.
-- Schlaegt ein Markt fehl, bricht das Skript NICHT ab - die uebrigen Maerkte
-  werden trotzdem verarbeitet. Fehler werden protokolliert.
+Wird automatisch per GitHub Actions ausgefuehrt
+(siehe .github/workflows/scrape.yml).
+
+WARTUNG:
+  - Sollte marktguru die Schluessel-Einbindung aendern, muss
+    `hole_api_schluessel()` angepasst werden. Die Stelle ist markiert.
+  - Schlaegt eine einzelne Abfrage fehl, laeuft der Rest trotzdem weiter.
 """
 
 import json
 import re
 import sys
 import os
+import time
 from datetime import datetime, timezone, timedelta
 
 import requests
@@ -28,37 +36,27 @@ import requests
 # --- Pfade -------------------------------------------------------------
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
-MARKETS_FILE = os.path.join(DATA_DIR, "markets.json")
+CONFIG_FILE = os.path.join(DATA_DIR, "config.json")
 BIERE_FILE = os.path.join(DATA_DIR, "biere.json")
-MANUELL_FILE = os.path.join(DATA_DIR, "manuell.json")
 OUTPUT_FILE = os.path.join(DATA_DIR, "angebote.json")
 
-# Deutsche Zeitzone (MESZ/MEZ - vereinfacht auf +2h)
-TZ = timezone(timedelta(hours=2))
+TZ = timezone(timedelta(hours=2))   # deutsche Sommerzeit (vereinfacht)
+TIMEOUT = 25
+PAUSE = 0.6                          # kurze Pause zwischen Abfragen (hoeflich)
 
-# Browser-aehnliche Header, damit die Seiten nicht sofort blocken.
-# Hinweis: Grosse Handelsketten sichern ihre Seiten teils gegen Bots ab -
-# ein 403 ist daher nicht ungewoehnlich. Dann den Markt manuell pflegen.
+MARKTGURU_BASIS = "https://www.marktguru.de"
+MARKTGURU_API = "https://api.marktguru.de/api/v1/offers/search"
+
+# Browser-aehnliche Header
 HEADERS = {
     "User-Agent": (
-        "Mozilla/5.0 (Linux; Android 14; Pixel 8) "
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Mobile Safari/537.36"
+        "Chrome/124.0.0.0 Safari/537.36"
     ),
-    "Accept": (
-        "text/html,application/xhtml+xml,application/xml;q=0.9,"
-        "image/avif,image/webp,*/*;q=0.8"
-    ),
-    "Accept-Language": "de-DE,de;q=0.9,en;q=0.5",
-    "Cache-Control": "no-cache",
-    "Sec-Fetch-Dest": "document",
-    "Sec-Fetch-Mode": "navigate",
-    "Sec-Fetch-Site": "none",
-    "Upgrade-Insecure-Requests": "1",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "de-DE,de;q=0.9",
 }
-
-TIMEOUT = 25
-RETRIES = 2
 
 
 # --- Hilfsfunktionen ---------------------------------------------------
@@ -67,258 +65,203 @@ def lade_json(pfad):
         return json.load(f)
 
 
-def hole_seite(url):
-    """Laedt eine URL mit kurzen Wiederholungen. Wirft bei Endfehler eine Exception."""
-    import time
-    letzter_fehler = None
-    for versuch in range(RETRIES + 1):
+# --- API-Schluessel beschaffen ----------------------------------------
+def hole_api_schluessel():
+    """
+    marktguru bindet zwei Schluessel (x-clientkey, x-apikey) in seine
+    Webseite ein. Wir laden eine Seite und ziehen die Schluessel per
+    Mustersuche heraus.
+
+    ANPASSEN, falls marktguru die Einbindung aendert.
+    Gibt (clientkey, apikey) zurueck oder wirft eine Exception.
+    """
+    # Die Schluessel stecken in den ausgelieferten JavaScript-Dateien.
+    # Wir holen zuerst die Startseite und sammeln daraus die JS-Dateien.
+    start = requests.get(MARKTGURU_BASIS, headers=HEADERS, timeout=TIMEOUT)
+    start.raise_for_status()
+
+    js_dateien = re.findall(r'src="([^"]+\.js)"', start.text)
+    # auch absolute Pfade beruecksichtigen
+    kandidaten = []
+    for j in js_dateien:
+        if j.startswith("http"):
+            kandidaten.append(j)
+        elif j.startswith("/"):
+            kandidaten.append(MARKTGURU_BASIS + j)
+
+    # Schluesselmuster: Base64-aehnliche Zeichenketten, die auf "=" enden
+    muster_client = re.compile(r'["\']?x-?clientkey["\']?\s*[:=]\s*["\']([^"\']+)["\']', re.I)
+    muster_api = re.compile(r'["\']?x-?apikey["\']?\s*[:=]\s*["\']([^"\']+)["\']', re.I)
+
+    # zuerst die Startseite selbst pruefen
+    quellen = [start.text]
+
+    # dann die JS-Dateien (die ersten paar reichen meist)
+    for url in kandidaten[:12]:
         try:
-            resp = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
-            resp.raise_for_status()
-            return resp.text
-        except Exception as e:
-            letzter_fehler = e
-            if versuch < RETRIES:
-                time.sleep(2)
-    raise letzter_fehler
+            r = requests.get(url, headers=HEADERS, timeout=TIMEOUT)
+            if r.ok:
+                quellen.append(r.text)
+        except Exception:
+            pass
 
-
-def finde_biere(text, biere):
-    """
-    Durchsucht einen Text nach den konfigurierten Bieren.
-    Gibt eine Liste der gefundenen Bier-Objekte zurueck.
-    """
-    text_klein = text.lower()
-    treffer = []
-    for bier in biere:
-        for alias in bier["aliase"]:
-            if alias.lower() in text_klein:
-                treffer.append(bier)
-                break
-    return treffer
-
-
-def extrahiere_preis(text):
-    """Versucht, einen Preis (z.B. 12,99) aus einem Textstueck zu ziehen."""
-    m = re.search(r"(\d{1,3}[.,]\d{2})\s*(?:€|EUR)?", text)
-    if m:
-        return m.group(1).replace(".", ",")
-    return None
-
-
-# --- Parser pro Markt-Typ ---------------------------------------------
-# Jeder Parser bekommt (markt, biere) und gibt eine Liste von Angeboten zurueck.
-# Ein Angebot ist ein dict:
-#   { "markt_id", "markt_name", "markt_ort", "markt_url",
-#     "bier_id", "bier_name", "titel", "preis", "quelle" }
-
-def parse_rewe(markt, biere):
-    """
-    REWE liefert Angebote ueber eine interne JSON-Schnittstelle aus.
-    Wir versuchen zunaechst die Angebotsseite direkt, dann ein Text-Match.
-    ANPASSEN falls REWE die Struktur aendert.
-    """
-    angebote = []
-    html = hole_seite(markt["url"])
-
-    # REWE bettet Angebotsdaten teils als JSON im HTML ein.
-    # Strategie: gesamten Seitentext nach Bier-Stichwoertern absuchen
-    # und den umgebenden Textausschnitt als Titel verwenden.
-    treffer_bloecke = _suche_textbloecke(html, biere)
-    for bier, block in treffer_bloecke:
-        angebote.append(_baue_angebot(markt, bier, block, "auto"))
-    return angebote
-
-
-def parse_edeka(markt, biere):
-    """
-    EDEKA-Marktseiten laden Prospekte oft per JavaScript nach.
-    Wir versuchen den statischen HTML-Inhalt - klappt das nicht,
-    bleibt der Markt leer und sollte manuell gepflegt werden.
-    ANPASSEN falls EDEKA die Struktur aendert.
-    """
-    angebote = []
-    html = hole_seite(markt["url"])
-    treffer_bloecke = _suche_textbloecke(html, biere)
-    for bier, block in treffer_bloecke:
-        angebote.append(_baue_angebot(markt, bier, block, "auto"))
-    return angebote
-
-
-def parse_koenner(markt, biere):
-    """
-    Getraenke Koenner Marktseite mit ?tab=angebote.
-    ANPASSEN falls die Struktur sich aendert.
-    """
-    angebote = []
-    html = hole_seite(markt["url"])
-    treffer_bloecke = _suche_textbloecke(html, biere)
-    for bier, block in treffer_bloecke:
-        angebote.append(_baue_angebot(markt, bier, block, "auto"))
-    return angebote
-
-
-def _suche_textbloecke(html, biere):
-    """
-    Generische Erkennung: entfernt HTML-Tags, sucht Bier-Stichwoerter und
-    schneidet den umliegenden Text als 'Angebotstitel' aus.
-    Robuster Allrounder, der bei den meisten Marktseiten funktioniert.
-    """
-    # HTML-Tags grob entfernen, Whitespace normalisieren
-    text = re.sub(r"<script.*?</script>", " ", html, flags=re.DOTALL | re.IGNORECASE)
-    text = re.sub(r"<style.*?</style>", " ", text, flags=re.DOTALL | re.IGNORECASE)
-    text = re.sub(r"<[^>]+>", " ", text)
-    text = re.sub(r"&[a-z]+;", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    text_klein = text.lower()
-
-    ergebnisse = []
-    gesehen = set()
-    for bier in biere:
-        for alias in bier["aliase"]:
-            idx = text_klein.find(alias.lower())
-            if idx == -1:
-                continue
-            # Textausschnitt rund um den Treffer (fuer Titel + Preis)
-            start = max(0, idx - 40)
-            ende = min(len(text), idx + 80)
-            block = text[start:ende].strip()
-            schluessel = (bier["id"],)
-            if schluessel in gesehen:
-                break
-            gesehen.add(schluessel)
-            ergebnisse.append((bier, block))
+    clientkey = apikey = None
+    for text in quellen:
+        if not clientkey:
+            m = muster_client.search(text)
+            if m:
+                clientkey = m.group(1)
+        if not apikey:
+            m = muster_api.search(text)
+            if m:
+                apikey = m.group(1)
+        if clientkey and apikey:
             break
-    return ergebnisse
+
+    if not (clientkey and apikey):
+        raise RuntimeError(
+            "marktguru-API-Schluessel nicht gefunden. "
+            "Vermutlich hat marktguru die Webseite umgebaut - "
+            "hole_api_schluessel() in scrape.py muss angepasst werden."
+        )
+    return clientkey, apikey
 
 
-def _baue_angebot(markt, bier, textblock, quelle):
+# --- marktguru abfragen -----------------------------------------------
+def suche_angebote(suchbegriff, plz, clientkey, apikey):
+    """Fragt die marktguru-Angebotssuche fuer einen Begriff + PLZ ab."""
+    params = {
+        "as": "web",
+        "limit": 80,
+        "offset": 0,
+        "q": suchbegriff,
+        "zipCode": plz,
+    }
+    kopf = dict(HEADERS)
+    kopf["x-clientkey"] = clientkey
+    kopf["x-apikey"] = apikey
+
+    r = requests.get(MARKTGURU_API, params=params, headers=kopf, timeout=TIMEOUT)
+    r.raise_for_status()
+    daten = r.json()
+    return daten.get("results", [])
+
+
+def passt_zum_bier(angebot, bier):
+    """Prueft, ob ein marktguru-Angebot wirklich zum gesuchten Bier gehoert."""
+    felder = []
+    for schluessel in ("title", "description", "brand"):
+        wert = angebot.get(schluessel)
+        if isinstance(wert, str):
+            felder.append(wert)
+        elif isinstance(wert, dict):
+            felder.append(str(wert.get("name", "")))
+    text = " ".join(felder).lower()
+    return any(alias in text for alias in bier["aliase"])
+
+
+def baue_angebot(angebot, bier, plz_ort):
+    """Formt einen marktguru-Treffer in unser einheitliches Format um."""
+    # Haendlername steht je nach Antwort unter advertisers[0].name
+    haendler = "Markt unbekannt"
+    werber = angebot.get("advertisers")
+    if isinstance(werber, list) and werber:
+        haendler = werber[0].get("name", haendler)
+    elif isinstance(angebot.get("advertiser"), dict):
+        haendler = angebot["advertiser"].get("name", haendler)
+
+    preis = angebot.get("price")
+    if isinstance(preis, (int, float)):
+        preis = ("%.2f" % preis).replace(".", ",")
+    elif not isinstance(preis, str):
+        preis = None
+
+    titel = angebot.get("description") or angebot.get("title") or bier["name"]
+
+    # Gueltigkeit
+    gueltig_bis = angebot.get("validityEndDate") or angebot.get("validTo")
+
     return {
-        "markt_id": markt["id"],
-        "markt_name": markt["name"],
-        "markt_ort": markt.get("ort", ""),
-        "markt_url": markt["url"],
         "bier_id": bier["id"],
         "bier_name": bier["name"],
-        "titel": textblock if textblock else bier["name"],
-        "preis": extrahiere_preis(textblock),
-        "quelle": quelle,
+        "markt_name": haendler,
+        "markt_ort": plz_ort,
+        "titel": str(titel).strip(),
+        "preis": preis,
+        "gueltig_bis": gueltig_bis,
+        "quelle": "marktguru",
     }
-
-
-PARSER = {
-    "rewe": parse_rewe,
-    "edeka": parse_edeka,
-    "koenner": parse_koenner,
-}
-
-
-# --- Manuelle Angebote -------------------------------------------------
-def lade_manuelle_angebote(maerkte, biere):
-    """Liest data/manuell.json und baut daraus Angebots-Eintraege."""
-    angebote = []
-    try:
-        manuell = lade_json(MANUELL_FILE)
-    except Exception as e:
-        print(f"  Hinweis: manuell.json nicht lesbar ({e})")
-        return angebote
-
-    markt_index = {m["id"]: m for m in maerkte}
-    bier_index = {b["id"]: b for b in biere}
-
-    heute = datetime.now(TZ).date()
-    for eintrag in manuell.get("angebote", []):
-        markt = markt_index.get(eintrag.get("markt_id"))
-        bier = bier_index.get(eintrag.get("bier_id"))
-        if not markt or not bier:
-            continue
-        # Abgelaufene manuelle Angebote ueberspringen
-        gueltig_bis = eintrag.get("gueltig_bis")
-        if gueltig_bis:
-            try:
-                if datetime.strptime(gueltig_bis, "%Y-%m-%d").date() < heute:
-                    continue
-            except ValueError:
-                pass
-        angebote.append({
-            "markt_id": markt["id"],
-            "markt_name": markt["name"],
-            "markt_ort": markt.get("ort", ""),
-            "markt_url": markt["url"],
-            "bier_id": bier["id"],
-            "bier_name": bier["name"],
-            "titel": eintrag.get("titel", bier["name"]),
-            "preis": eintrag.get("preis"),
-            "quelle": "manuell",
-        })
-    return angebote
 
 
 # --- Hauptlauf ---------------------------------------------------------
 def main():
-    print("=== Bierradar Scraper ===")
-    markets_cfg = lade_json(MARKETS_FILE)
-    biere_cfg = lade_json(BIERE_FILE)
-    maerkte = markets_cfg["maerkte"]
-    biere = biere_cfg["biere"]
+    print("=== Bierradar Scraper (marktguru) ===")
+    config = lade_json(CONFIG_FILE)
+    biere = lade_json(BIERE_FILE)["biere"]
+    plz_liste = config["postleitzahlen"]
 
+    fehler_global = []
+
+    # 1) API-Schluessel holen
+    try:
+        clientkey, apikey = hole_api_schluessel()
+        print("API-Schluessel erfolgreich geholt.")
+    except Exception as e:
+        print(f"FEHLER beim Holen der Schluessel: {e}", file=sys.stderr)
+        # Ergebnis mit Fehlerhinweis schreiben, App zeigt dann eine Meldung
+        schreibe_ergebnis([], [str(e)])
+        sys.exit(1)
+
+    # 2) Fuer jedes Bier und jede PLZ abfragen
     alle_angebote = []
-    markt_status = []
+    for bier in biere:
+        print(f"\n-> {bier['name']}")
+        for begriff in bier["suchbegriffe"]:
+            for plz_eintrag in plz_liste:
+                plz = plz_eintrag["plz"]
+                ort = plz_eintrag["ort"]
+                try:
+                    treffer = suche_angebote(begriff, plz, clientkey, apikey)
+                    passend = [t for t in treffer if passt_zum_bier(t, bier)]
+                    for t in passend:
+                        alle_angebote.append(baue_angebot(t, bier, ort))
+                    print(f"   '{begriff}' @ {plz} ({ort}): "
+                          f"{len(passend)} passende von {len(treffer)}")
+                except Exception as e:
+                    msg = f"{begriff}@{plz}: {e}"
+                    print(f"   FEHLER {msg}")
+                    fehler_global.append(msg)
+                time.sleep(PAUSE)
 
-    for markt in maerkte:
-        if not markt.get("aktiv", True):
-            continue
-        name = markt["name"]
-        typ = markt.get("typ", "manuell")
-        print(f"\n-> {name} ({typ})")
-
-        if typ == "manuell" or typ not in PARSER:
-            markt_status.append({"markt_id": markt["id"], "name": name,
-                                 "status": "manuell", "treffer": 0})
-            continue
-
-        try:
-            gefunden = PARSER[typ](markt, biere)
-            alle_angebote.extend(gefunden)
-            print(f"   {len(gefunden)} Bier-Treffer")
-            markt_status.append({"markt_id": markt["id"], "name": name,
-                                 "status": "ok", "treffer": len(gefunden)})
-        except Exception as e:
-            print(f"   FEHLER: {e}")
-            markt_status.append({"markt_id": markt["id"], "name": name,
-                                 "status": "fehler", "treffer": 0,
-                                 "fehlermeldung": str(e)[:200]})
-
-    # Manuelle Angebote ergaenzen
-    manuelle = lade_manuelle_angebote(maerkte, biere)
-    if manuelle:
-        print(f"\n-> {len(manuelle)} manuelle Angebote ergaenzt")
-        alle_angebote.extend(manuelle)
-
-    # Duplikate entfernen (gleicher Markt + gleiches Bier + gleiche Quelle)
+    # 3) Duplikate entfernen (gleiches Bier + Markt + Titel)
     eindeutig = {}
     for a in alle_angebote:
-        key = (a["markt_id"], a["bier_id"], a["quelle"])
+        key = (a["bier_id"], a["markt_name"], a["titel"])
         if key not in eindeutig:
             eindeutig[key] = a
-    alle_angebote = list(eindeutig.values())
+    ergebnis_liste = list(eindeutig.values())
 
+    schreibe_ergebnis(ergebnis_liste, fehler_global)
+    print(f"\n=== Fertig: {len(ergebnis_liste)} Angebote geschrieben ===")
+
+
+def schreibe_ergebnis(angebote, fehler):
     ergebnis = {
-        "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Nicht von Hand bearbeiten.",
+        "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
         "stand": datetime.now(TZ).isoformat(),
-        "markt_status": markt_status,
-        "angebote": alle_angebote,
+        "quelle": "marktguru.de",
+        "fehler": fehler,
+        "angebote": angebote,
     }
-
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(ergebnis, f, ensure_ascii=False, indent=2)
-
-    print(f"\n=== Fertig: {len(alle_angebote)} Angebote geschrieben ===")
 
 
 if __name__ == "__main__":
     try:
         main()
+    except SystemExit:
+        raise
     except Exception as e:
         print(f"Schwerer Fehler: {e}", file=sys.stderr)
         sys.exit(1)

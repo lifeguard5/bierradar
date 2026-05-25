@@ -1,24 +1,28 @@
 {
-  "_hinweis": "Liste der Biere, die der Scraper erkennen soll. 'aliase' sind Stichwoerter (klein geschrieben), die im Angebotstext gesucht werden. Je mehr Aliase, desto besser die Trefferquote.",
+  "_hinweis": "Liste der Biere, die der Bierradar sucht. 'suchbegriffe' werden an die marktguru-Suche geschickt. 'aliase' (klein) dienen zur Pruefung, ob ein gefundenes Angebot wirklich zum Bier passt.",
   "biere": [
     {
       "id": "veltins",
       "name": "Veltins",
+      "suchbegriffe": ["Veltins"],
       "aliase": ["veltins"]
     },
     {
       "id": "erdinger",
       "name": "Erdinger Weißbier",
-      "aliase": ["erdinger", "erdinger weißbier", "erdinger weissbier", "erdinger weizen"]
+      "suchbegriffe": ["Erdinger"],
+      "aliase": ["erdinger"]
     },
     {
       "id": "moenchshof",
       "name": "Mönchshof Hell",
-      "aliase": ["mönchshof hell", "moenchshof hell", "mönchshof helles", "mönchhof hell", "moenchhof hell"]
+      "suchbegriffe": ["Mönchshof", "Moenchshof"],
+      "aliase": ["mönchshof", "moenchshof", "mönchhof", "moenchhof"]
     },
     {
       "id": "hasseroeder",
       "name": "Hasseröder",
+      "suchbegriffe": ["Hasseröder", "Hasseroeder"],
       "aliase": ["hasseröder", "hasseroeder", "hasseroder"]
     }
   ]

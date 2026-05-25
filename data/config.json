@@ -1,0 +1,12 @@
+{
+  "_hinweis": "Zentrale Einstellungen fuer den Bierradar. Die Angebote werden ueber das Prospekt-Portal marktguru.de bezogen - eine einzige Quelle fuer alle Maerkte der Umgebung.",
+  "heimatort": "Breuna",
+  "postleitzahlen": [
+    { "plz": "34479", "ort": "Breuna" },
+    { "plz": "34471", "ort": "Volkmarsen" },
+    { "plz": "34414", "ort": "Warburg" },
+    { "plz": "34466", "ort": "Wolfhagen" }
+  ],
+  "_plz_hinweis": "marktguru liefert Angebote rund um eine Postleitzahl. Mehrere PLZ decken den ~20-km-Umkreis um Breuna ab. Weitere Orte koennen hier ergaenzt werden.",
+  "umkreis_km": 20
+}

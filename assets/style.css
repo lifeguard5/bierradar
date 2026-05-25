@@ -259,6 +259,38 @@ body {
   font-weight: 600;
 }
 
+.karte-gueltig {
+  margin-left: auto;
+  font-size: 0.74rem;
+  color: var(--grau);
+  font-weight: 500;
+}
+
+/* Infobereich-Zeilen */
+.info-zeile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid var(--grau-hell);
+  font-size: 0.86rem;
+}
+.info-zeile span { color: var(--grau); }
+.info-zeile strong {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1rem;
+  color: var(--gruen-tief);
+}
+.marktstatus-inhalt p {
+  font-size: 0.84rem;
+  color: var(--grau);
+  margin-bottom: 4px;
+}
+.info-warnung {
+  margin-top: 8px;
+  color: #9a7411 !important;
+}
+
 /* leerer Zustand */
 .leer {
   text-align: center;

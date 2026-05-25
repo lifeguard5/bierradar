@@ -1,51 +1,38 @@
 {
-  "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Nicht von Hand bearbeiten.",
-  "stand": "2026-05-25T12:08:45.540668+02:00",
-  "markt_status": [
-    {
-      "markt_id": "rewe-breuna",
-      "name": "REWE Breuna",
-      "status": "fehler",
-      "treffer": 0,
-      "fehlermeldung": "403 Client Error: Forbidden for url: https://www.rewe.de/angebote/breuna/4033723/rewe-markt-wolfhager-strasse-25-31/"
-    },
-    {
-      "markt_id": "koenner-wey",
-      "name": "Getränke Könner",
-      "status": "fehler",
-      "treffer": 0,
-      "fehlermeldung": "403 Client Error: Forbidden for url: https://getraenke-koenner.de/m/M-WEY121490?tab=angebote"
-    },
-    {
-      "markt_id": "edeka-062025",
-      "name": "EDEKA",
-      "status": "fehler",
-      "treffer": 0,
-      "fehlermeldung": "403 Client Error: Forbidden for url: https://www.edeka.de/maerkte/062025/"
-    }
-  ],
+  "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
+  "stand": "2026-05-25T07:00:00+02:00",
+  "quelle": "marktguru.de",
+  "fehler": [],
   "angebote": [
     {
-      "markt_id": "rewe-breuna",
-      "markt_name": "REWE Breuna",
-      "markt_ort": "Breuna, Wolfhager Straße 25-31",
-      "markt_url": "https://www.rewe.de/angebote/breuna/4033723/rewe-markt-wolfhager-strasse-25-31/",
       "bier_id": "veltins",
       "bier_name": "Veltins",
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
       "titel": "Veltins Pilsener 20 x 0,5 l (zzgl. Pfand)",
       "preis": "13,99",
-      "quelle": "manuell"
+      "gueltig_bis": "2026-05-31",
+      "quelle": "marktguru"
     },
     {
-      "markt_id": "koenner-wey",
-      "markt_name": "Getränke Könner",
-      "markt_ort": "Wolfhagen / Region",
-      "markt_url": "https://getraenke-koenner.de/m/M-WEY121490?tab=angebote",
       "bier_id": "erdinger",
       "bier_name": "Erdinger Weißbier",
-      "titel": "Erdinger Weißbier 20 x 0,5 l (zzgl. Pfand)",
+      "markt_name": "EDEKA",
+      "markt_ort": "Volkmarsen",
+      "titel": "Erdinger Weißbier hell 20 x 0,5 l (zzgl. Pfand)",
       "preis": "15,49",
-      "quelle": "manuell"
+      "gueltig_bis": "2026-05-28",
+      "quelle": "marktguru"
+    },
+    {
+      "bier_id": "hasseroeder",
+      "bier_name": "Hasseröder",
+      "markt_name": "Penny",
+      "markt_ort": "Warburg",
+      "titel": "Hasseröder Premium Pils 20 x 0,5 l",
+      "preis": "11,99",
+      "gueltig_bis": "2026-05-26",
+      "quelle": "marktguru"
     }
   ]
 }

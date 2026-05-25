@@ -1,0 +1,30 @@
+{
+  "_hinweis": "Hier neue Maerkte eintragen. type bestimmt, welcher Scraper-Parser verwendet wird: 'rewe', 'edeka', 'koenner' oder 'manuell'. Bei 'manuell' werden Angebote aus data/manuell.json gelesen. Bitte nur Maerkte im Umkreis von ca. 20 km um Breuna eintragen.",
+  "heimatort": "Breuna",
+  "maerkte": [
+    {
+      "id": "rewe-breuna",
+      "name": "REWE Breuna",
+      "ort": "Breuna, Wolfhager Straße 25-31",
+      "typ": "rewe",
+      "url": "https://www.rewe.de/angebote/breuna/4033723/rewe-markt-wolfhager-strasse-25-31/",
+      "aktiv": true
+    },
+    {
+      "id": "koenner-wey",
+      "name": "Getränke Könner",
+      "ort": "Wolfhagen / Region",
+      "typ": "koenner",
+      "url": "https://getraenke-koenner.de/m/M-WEY121490?tab=angebote",
+      "aktiv": true
+    },
+    {
+      "id": "edeka-062025",
+      "name": "EDEKA",
+      "ort": "Region Breuna",
+      "typ": "edeka",
+      "url": "https://www.edeka.de/maerkte/062025/",
+      "aktiv": true
+    }
+  ]
+}

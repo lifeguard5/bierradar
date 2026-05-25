@@ -1,0 +1,376 @@
+/* =====================================================================
+   Bierradar – Stylesheet
+   Design-Orientierung: Brauerei Veltins
+   - Markenfarbe: tiefes Veltins-Grün
+   - viel Weißraum, klare Typografie (Oswald als Display-Schrift)
+   - mobil zuerst gedacht
+   ===================================================================== */
+
+:root {
+  --gruen-tief:   #00592d;   /* Veltins-Dunkelgrün */
+  --gruen:        #007a3d;   /* Markengrün */
+  --gruen-hell:   #4caf50;
+  --gruen-frisch: #6fbf4a;   /* helles Frischegrün (Helles-Lager-DNA) */
+  --gold:         #d4a017;   /* Goldakzent (Krone/Stern) */
+  --weiss:        #ffffff;
+  --creme:        #f5f6f1;   /* leicht warmer Hintergrund */
+  --grau:         #6b7066;
+  --grau-hell:    #e3e5dd;
+  --text:         #1c241d;
+  --rot:          #c0392b;
+
+  --schatten:     0 4px 16px rgba(0, 40, 18, 0.10);
+  --schatten-tief:0 8px 28px rgba(0, 40, 18, 0.16);
+  --radius:       16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--creme);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Kopfbereich ------------------------------------------- */
+.kopf {
+  background: linear-gradient(160deg, var(--gruen-tief) 0%, var(--gruen) 100%);
+  color: var(--weiss);
+  position: relative;
+  padding: calc(env(safe-area-inset-top) + 18px) 20px 0;
+}
+
+.kopf-inhalt {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 22px;
+}
+
+.logo-wappen {
+  width: 38px;
+  height: 46px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.logo-text { display: flex; flex-direction: column; }
+
+.logo-haupt {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 1.7rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.logo-unter {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gruen-frisch);
+  margin-top: 3px;
+}
+
+/* dekorative Welle am unteren Kopf-Rand */
+.kopf-welle {
+  height: 22px;
+  background: var(--creme);
+  border-radius: 22px 22px 0 0;
+  margin-top: 4px;
+}
+
+/* ---------- Hauptinhalt ------------------------------------------- */
+.inhalt {
+  flex: 1;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 8px 16px 32px;
+}
+
+/* Standzeile */
+.standzeile {
+  font-size: 0.8rem;
+  color: var(--grau);
+  text-align: center;
+  padding: 6px 0 14px;
+}
+.standzeile.fehler { color: var(--rot); }
+
+/* ---------- Filterleiste ------------------------------------------ */
+.filterleiste {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 0 12px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.filterleiste::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+  flex-shrink: 0;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--grau-hell);
+  background: var(--weiss);
+  color: var(--grau);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.filter-chip:active { transform: scale(0.96); }
+.filter-chip.aktiv {
+  background: var(--gruen-tief);
+  border-color: var(--gruen-tief);
+  color: var(--weiss);
+}
+.filter-chip .anzahl {
+  display: inline-block;
+  margin-left: 5px;
+  font-size: 0.72rem;
+  opacity: 0.7;
+}
+.filter-chip.aktiv .anzahl { opacity: 0.85; }
+
+/* ---------- Ergebnisliste ----------------------------------------- */
+.ergebnisliste {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* Angebotskarte */
+.karte {
+  background: var(--weiss);
+  border-radius: var(--radius);
+  box-shadow: var(--schatten);
+  overflow: hidden;
+  display: flex;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  animation: auftauchen 0.35s ease both;
+}
+.karte:active {
+  transform: scale(0.985);
+  box-shadow: var(--schatten-tief);
+}
+
+/* farbiger Streifen links */
+.karte-streifen {
+  width: 7px;
+  flex-shrink: 0;
+  background: var(--gruen-frisch);
+}
+
+.karte-inhalt {
+  flex: 1;
+  padding: 14px 16px;
+  min-width: 0;
+}
+
+.karte-kopf {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.karte-bier {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: var(--gruen-tief);
+  letter-spacing: 0.01em;
+}
+
+.karte-preis {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.karte-markt {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.karte-ort {
+  font-size: 0.8rem;
+  color: var(--grau);
+  margin-top: 1px;
+}
+
+.karte-titel {
+  font-size: 0.78rem;
+  color: var(--grau);
+  margin-top: 7px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.karte-fuss {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.badge {
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.badge-auto    { background: #e7f3e9; color: var(--gruen); }
+.badge-manuell { background: #fdf2d8; color: #9a7411; }
+
+.karte-pfeil {
+  margin-left: auto;
+  font-size: 0.78rem;
+  color: var(--gruen);
+  font-weight: 600;
+}
+
+/* leerer Zustand */
+.leer {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--grau);
+}
+.leer-symbol {
+  font-size: 2.6rem;
+  margin-bottom: 10px;
+}
+.leer-titel {
+  font-family: 'Oswald', sans-serif;
+  font-size: 1.15rem;
+  color: var(--gruen-tief);
+  margin-bottom: 6px;
+}
+.leer-text { font-size: 0.88rem; }
+
+/* ---------- Marktstatus ------------------------------------------- */
+.marktstatus {
+  margin-top: 24px;
+  background: var(--weiss);
+  border-radius: var(--radius);
+  box-shadow: var(--schatten);
+  overflow: hidden;
+}
+.marktstatus summary {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gruen-tief);
+  padding: 14px 16px;
+  cursor: pointer;
+  list-style: none;
+}
+.marktstatus summary::-webkit-details-marker { display: none; }
+.marktstatus summary::after {
+  content: '＋';
+  float: right;
+  color: var(--grau);
+}
+.marktstatus[open] summary::after { content: '－'; }
+
+.marktstatus-inhalt {
+  padding: 0 16px 14px;
+}
+.markt-zeile {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1px solid var(--grau-hell);
+  font-size: 0.85rem;
+}
+.markt-punkt {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.punkt-ok      { background: var(--gruen-hell); }
+.punkt-fehler  { background: var(--rot); }
+.punkt-manuell { background: var(--gold); }
+.markt-zeile-name { flex: 1; font-weight: 500; }
+.markt-zeile-info { color: var(--grau); font-size: 0.78rem; }
+
+/* ---------- Fußbereich -------------------------------------------- */
+.fuss {
+  background: var(--gruen-tief);
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  padding: 22px 20px calc(env(safe-area-inset-bottom) + 22px);
+  font-size: 0.8rem;
+}
+.fuss-klein {
+  margin-top: 6px;
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.55);
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ---------- Animationen ------------------------------------------- */
+@keyframes auftauchen {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lade-puls {
+  text-align: center;
+  padding: 40px 0;
+  color: var(--grau);
+}
+.lade-puls span {
+  display: inline-block;
+  width: 12px; height: 12px;
+  margin: 0 3px;
+  border-radius: 50%;
+  background: var(--gruen-frisch);
+  animation: puls 1s infinite ease-in-out;
+}
+.lade-puls span:nth-child(2) { animation-delay: 0.15s; }
+.lade-puls span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes puls {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50%      { opacity: 1;   transform: scale(1); }
+}
+
+/* etwas mehr Luft auf größeren Screens */
+@media (min-width: 560px) {
+  .logo-haupt { font-size: 1.95rem; }
+  .karte-bier { font-size: 1.25rem; }
+}

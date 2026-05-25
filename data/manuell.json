@@ -1,0 +1,26 @@
+{
+  "_hinweis": "Hier koennen Angebote von Hand eingetragen werden, falls der automatische Scraper einen Markt nicht auslesen kann. Die App fuehrt diese mit den automatisch gefundenen zusammen. Format pro Eintrag siehe Beispiel.",
+  "_beispiel": {
+    "markt_id": "edeka-062025",
+    "bier_id": "veltins",
+    "titel": "Veltins Pilsener 20x0,5l",
+    "preis": "12,99",
+    "gueltig_bis": "2026-05-31"
+  },
+  "angebote": [
+    {
+      "markt_id": "rewe-breuna",
+      "bier_id": "veltins",
+      "titel": "Veltins Pilsener 20 x 0,5 l (zzgl. Pfand)",
+      "preis": "13,99",
+      "gueltig_bis": "2026-05-31"
+    },
+    {
+      "markt_id": "koenner-wey",
+      "bier_id": "erdinger",
+      "titel": "Erdinger Weißbier 20 x 0,5 l (zzgl. Pfand)",
+      "preis": "15,49",
+      "gueltig_bis": "2026-05-31"
+    }
+  ]
+}

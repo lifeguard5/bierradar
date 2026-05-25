@@ -1,0 +1,25 @@
+{
+  "_hinweis": "Liste der Biere, die der Scraper erkennen soll. 'aliase' sind Stichwoerter (klein geschrieben), die im Angebotstext gesucht werden. Je mehr Aliase, desto besser die Trefferquote.",
+  "biere": [
+    {
+      "id": "veltins",
+      "name": "Veltins",
+      "aliase": ["veltins"]
+    },
+    {
+      "id": "erdinger",
+      "name": "Erdinger Weißbier",
+      "aliase": ["erdinger", "erdinger weißbier", "erdinger weissbier", "erdinger weizen"]
+    },
+    {
+      "id": "moenchshof",
+      "name": "Mönchshof Hell",
+      "aliase": ["mönchshof hell", "moenchshof hell", "mönchshof helles", "mönchhof hell", "moenchhof hell"]
+    },
+    {
+      "id": "hasseroeder",
+      "name": "Hasseröder",
+      "aliase": ["hasseröder", "hasseroeder", "hasseroder"]
+    }
+  ]
+}

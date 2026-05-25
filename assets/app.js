@@ -228,7 +228,8 @@
 
     let html =
       '<p>Der Bierradar durchsucht automatisch die Angebotsprospekte ' +
-      'der Supermaerkte und Getraenkemaerkte rund um Breuna.</p>';
+      'der Supermaerkte und Getraenkemaerkte rund um Breuna und zeigt ' +
+      'ausschliesslich <strong>Kasten-Angebote</strong>.</p>';
     html +=
       '<div class="info-zeile"><span>Aktuelle Angebote</span><strong>' +
       angebote.length + "</strong></div>";

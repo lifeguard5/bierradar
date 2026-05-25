@@ -327,6 +327,36 @@ def baue_angebot(angebot, bier, plz_ort):
     }
 
 
+def ist_kasten(angebot):
+    """
+    Prueft, ob ein Angebot ein Kasten ist - nur diese interessieren uns.
+
+    Ein Angebot gilt als Kasten, wenn:
+      - der erkannte Gebinde-Typ 'Kasten' ist, ODER
+      - es ein Mehrgebinde mit mindestens 10 Flaschen ist
+        (faengt Kaesten ab, bei denen das Wort 'Kasten' im Titel fehlt,
+         z.B. 'Veltins 24 x 0,33 l').
+
+    Ausdruecklich NICHT als Kasten zaehlen: Sixpacks, Dosen,
+    Einzelflaschen und Faesser.
+    """
+    typ = angebot.get("gebinde_typ")
+    anzahl = angebot.get("anzahl")
+
+    # eindeutige Nicht-Kaesten direkt aussortieren
+    if typ in ("Dose", "Fass", "Sixpack", "Einzelflasche"):
+        return False
+
+    if typ == "Kasten":
+        return True
+
+    # kein klarer Typ, aber viele Flaschen -> ist praktisch ein Kasten
+    if isinstance(anzahl, int) and anzahl >= 10:
+        return True
+
+    return False
+
+
 # --- Hauptlauf ---------------------------------------------------------
 def main():
     print("=== Bierradar Scraper (marktguru) ===")
@@ -357,10 +387,17 @@ def main():
                 try:
                     treffer = suche_angebote(begriff, plz, clientkey, apikey)
                     passend = [t for t in treffer if passt_zum_bier(t, bier)]
+                    # Nur Kaesten behalten - Sixpacks, Dosen und
+                    # Einzelflaschen interessieren uns nicht.
+                    kaesten = 0
                     for t in passend:
-                        alle_angebote.append(baue_angebot(t, bier, ort))
+                        angebot = baue_angebot(t, bier, ort)
+                        if ist_kasten(angebot):
+                            alle_angebote.append(angebot)
+                            kaesten += 1
                     print(f"   '{begriff}' @ {plz} ({ort}): "
-                          f"{len(passend)} passende von {len(treffer)}")
+                          f"{kaesten} Kaesten von {len(passend)} passenden "
+                          f"({len(treffer)} Treffer)")
                 except Exception as e:
                     msg = f"{begriff}@{plz}: {e}"
                     print(f"   FEHLER {msg}")

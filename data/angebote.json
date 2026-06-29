@@ -1,9 +1,24 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-06-28T10:15:54.308730+02:00",
+  "stand": "2026-06-29T11:21:24.253652+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
+    {
+      "bier_id": "veltins",
+      "bier_name": "Veltins",
+      "markt_name": "Netto Marken-Discount",
+      "markt_ort": "Breuna",
+      "titel": "20 x 0,5 / 24 x 0,33 Liter zzgl. Pfand 3.10 / 3.42 pro Kiste ab 2 Kisten pro Kiste 11.99 ab 3 Kisten pro Kiste 10.99",
+      "preis": "12,99",
+      "gueltig_bis": null,
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,30",
+      "quelle": "marktguru"
+    },
     {
       "bier_id": "veltins",
       "bier_name": "Veltins",

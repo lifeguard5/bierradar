@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-07-04T09:36:01.117444+02:00",
+  "stand": "2026-07-04T14:25:40.123786+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -9,144 +9,144 @@
       "bier_name": "Erdinger Weißbier",
       "markt_name": "REWE",
       "markt_ort": "Breuna",
-      "titel": "oder Brauhaus je 20 x 0,5-l-Fl.-Kasten  zzgl. 3.10 Pfand",
-      "preis": "14,99",
-      "gueltig_bis": null,
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,50",
-      "quelle": "marktguru",
       "entfernung_km": 0.3,
       "weitere_orte": [
         "Volkmarsen",
         "Warburg",
         "Bad Arolsen"
       ],
-      "ort_verifiziert": true
+      "ort_verifiziert": true,
+      "titel": "oder Brauhaus je 20 x 0,5-l-Fl.-Kasten  zzgl. 3.10 Pfand",
+      "preis": "14,99",
+      "gueltig_bis": "2026-07-04T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,50",
+      "quelle": "marktguru"
     },
     {
       "bier_id": "moenchshof",
       "bier_name": "Mönchshof Hell",
       "markt_name": "REWE",
       "markt_ort": "Breuna",
-      "titel": "versch. Sorten, auch alkoholfrei, je 20 x 0,5-l-Fl.-Kasten zzgl. 4.50 Pfand",
-      "preis": "14,99",
-      "gueltig_bis": null,
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,50",
-      "quelle": "marktguru",
       "entfernung_km": 0.3,
       "weitere_orte": [
         "Volkmarsen",
         "Warburg",
         "Bad Arolsen"
       ],
-      "ort_verifiziert": true
+      "ort_verifiziert": true,
+      "titel": "versch. Sorten, auch alkoholfrei, je 20 x 0,5-l-Fl.-Kasten zzgl. 4.50 Pfand",
+      "preis": "14,99",
+      "gueltig_bis": "2026-07-04T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,50",
+      "quelle": "marktguru"
     },
     {
       "bier_id": "hasseroeder",
       "bier_name": "Hasseröder",
       "markt_name": "Netto Marken-Discount",
       "markt_ort": "Warburg",
+      "entfernung_km": 8.9,
+      "weitere_orte": [
+        "Wolfhagen"
+      ],
+      "ort_verifiziert": true,
       "titel": "20 x 0,5 Liter zzgl. Pfand 3.10",
       "preis": "8,49",
-      "gueltig_bis": null,
+      "gueltig_bis": "2026-07-04T21:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
       "preis_pro_liter": "0,85",
-      "quelle": "marktguru",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true
+      "quelle": "marktguru"
     },
     {
       "bier_id": "veltins",
       "bier_name": "Veltins",
       "markt_name": "Netto Marken-Discount",
       "markt_ort": "Warburg",
+      "entfernung_km": 8.9,
+      "weitere_orte": [
+        "Wolfhagen"
+      ],
+      "ort_verifiziert": true,
       "titel": "20 x 0,5 / 24 x 0,33 Liter zzgl. Pfand 3.10 / 3.42 pro Kiste ab 2 Kisten pro Kiste 11.99 ab 3 Kisten pro Kiste 10.99",
       "preis": "12,99",
-      "gueltig_bis": null,
+      "gueltig_bis": "2026-07-04T21:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
       "preis_pro_liter": "1,30",
-      "quelle": "marktguru",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true
+      "quelle": "marktguru"
     },
     {
       "bier_id": "moenchshof",
       "bier_name": "Mönchshof Hell",
       "markt_name": "Netto Marken-Discount",
       "markt_ort": "Warburg",
+      "entfernung_km": 8.9,
+      "weitere_orte": [
+        "Wolfhagen"
+      ],
+      "ort_verifiziert": true,
       "titel": "20 x 0,5 Liter zzgl. Pfand 4.50",
       "preis": "13,99",
-      "gueltig_bis": null,
+      "gueltig_bis": "2026-07-04T21:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
       "preis_pro_liter": "1,40",
-      "quelle": "marktguru",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true
+      "quelle": "marktguru"
     },
     {
       "bier_id": "erdinger",
       "bier_name": "Erdinger Weißbier",
       "markt_name": "Netto Marken-Discount",
       "markt_ort": "Warburg",
+      "entfernung_km": 8.9,
+      "weitere_orte": [
+        "Wolfhagen"
+      ],
+      "ort_verifiziert": true,
       "titel": "HINWEIS: MIT NETTO PLUS APP 8.44 €  oder Alkoholfrei 11 x 0,5 Liter zzgl. Pfand 3.10",
       "preis": "8,99",
-      "gueltig_bis": null,
+      "gueltig_bis": "2026-07-04T21:59:00Z",
       "gebinde_typ": "Mehrpack",
       "anzahl": 11,
       "einzelgroesse_l": 0.5,
       "gesamt_l": 5.5,
       "preis_pro_liter": "1,63",
-      "quelle": "marktguru",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true
+      "quelle": "marktguru"
     },
     {
       "bier_id": "veltins",
       "bier_name": "Veltins",
       "markt_name": "PENNY",
       "markt_ort": "Habichtswald-Ehlen",
+      "entfernung_km": 13.1,
+      "weitere_orte": [
+        "Kassel-Jungfernkopf"
+      ],
+      "ort_verifiziert": true,
       "titel": "Zzgl. 3.42 Pfand, je 24 x 0,33 l",
       "preis": "11,49",
-      "gueltig_bis": null,
+      "gueltig_bis": "2026-07-04T21:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 24,
       "einzelgroesse_l": 0.33,
       "gesamt_l": 7.92,
       "preis_pro_liter": "1,45",
-      "quelle": "marktguru",
-      "entfernung_km": 13.1,
-      "weitere_orte": [
-        "Kassel-Jungfernkopf"
-      ],
-      "ort_verifiziert": true
+      "quelle": "marktguru"
     }
   ]
 }

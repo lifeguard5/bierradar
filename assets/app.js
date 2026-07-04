@@ -132,7 +132,10 @@
 
   // --- Ergebnisliste -------------------------------------------------
   function zeigeListe() {
-    let gefiltert = angebote.slice();
+    // Abgelaufene Angebote gar nicht erst anzeigen
+    let gefiltert = angebote.filter(function (a) {
+      return !istAbgelaufen(a.gueltig_bis);
+    });
     if (bierFilter !== "alle") {
       gefiltert = gefiltert.filter(function (a) {
         return a.bier_id === bierFilter;
@@ -154,8 +157,11 @@
       return;
     }
 
-    // guenstigster Liter-Preis zuerst (Angebote ohne Literpreis ans Ende)
+    // Naechster Ort zu Breuna zuerst (Breuna selbst ganz oben),
+    // bei gleicher Entfernung der guenstigste Liter-Preis.
     gefiltert.sort(function (a, b) {
+      const km = kmZahl(a.entfernung_km) - kmZahl(b.entfernung_km);
+      if (km !== 0) return km;
       return literZahl(a.preis_pro_liter) - literZahl(b.preis_pro_liter);
     });
 
@@ -209,7 +215,7 @@
           preis +
         "</div>" +
         '<div class="karte-markt">' + escHtml(a.markt_name) + "</div>" +
-        '<div class="karte-ort">' + escHtml(a.markt_ort || "") + "</div>" +
+        '<div class="karte-ort">' + ortText(a) + "</div>" +
         titel +
         '<div class="karte-meta">' + gebindeEtikett + literPreis + "</div>" +
         '<div class="karte-fuss">' +
@@ -228,8 +234,10 @@
 
     let html =
       '<p>Der Bierradar durchsucht automatisch die Angebotsprospekte ' +
-      'der Supermaerkte und Getraenkemaerkte rund um Breuna und zeigt ' +
-      'ausschliesslich <strong>Kasten-Angebote</strong>.</p>';
+      'der Supermaerkte und Getraenkemaerkte im Umkreis von ' +
+      '<strong>25 km um Breuna</strong> und zeigt ausschliesslich ' +
+      '<strong>Kasten-Angebote</strong>. Der angezeigte Ort ist die ' +
+      'naechstgelegene Filiale der jeweiligen Kette (Entfernung Luftlinie).</p>';
     html +=
       '<div class="info-zeile"><span>Aktuelle Angebote</span><strong>' +
       angebote.length + "</strong></div>";
@@ -242,8 +250,9 @@
         escHtml(quelle) + "</strong></div>";
     }
     html +=
-      '<p class="info-klein">Sortiert nach Preis pro Liter \u2013 ' +
-      'so lassen sich Kaesten, Sixpacks und Dosen fair vergleichen.</p>';
+      '<p class="info-klein">Sortiert nach Entfernung zu Breuna \u2013 ' +
+      'der naechste Markt steht ganz oben. Bei gleicher Entfernung ' +
+      'gewinnt der guenstigere Preis pro Liter.</p>';
     if (daten.fehler && daten.fehler.length) {
       html +=
         '<p class="info-warnung">Hinweis: ' + daten.fehler.length +
@@ -273,6 +282,34 @@
     if (!p) return 99999;
     const n = parseFloat(String(p).replace(",", "."));
     return isNaN(n) ? 99999 : n;
+  }
+
+  function kmZahl(km) {
+    // fehlende Entfernung (unbekannte Kette / alte Daten) ans Ende
+    return (typeof km === "number" && !isNaN(km)) ? km : 99999;
+  }
+
+  function istAbgelaufen(roh) {
+    if (!roh) return false; // ohne Datum lieber anzeigen als verstecken
+    const d = new Date(roh);
+    if (isNaN(d.getTime())) return false;
+    const heute = new Date();
+    heute.setHours(0, 0, 0, 0);
+    return d < heute;
+  }
+
+  function ortText(a) {
+    // z.B. "Wolfhagen · ca. 10 km · auch in Warburg"
+    let text = escHtml(a.markt_ort || "");
+    if (typeof a.entfernung_km === "number" && !isNaN(a.entfernung_km)) {
+      const km = Math.round(a.entfernung_km);
+      text += " \u00B7 " + (km <= 0 ? "direkt in Breuna" : "ca. " + km + " km");
+    }
+    if (a.weitere_orte && a.weitere_orte.length) {
+      text += ' <span class="karte-ort-weitere">\u00B7 auch in '
+        + escHtml(a.weitere_orte.slice(0, 2).join(", ")) + "</span>";
+    }
+    return text;
   }
 
   function zahlText(n) {

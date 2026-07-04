@@ -253,6 +253,10 @@ body {
   margin-top: 4px;
 }
 
+.karte-ort-weitere {
+  opacity: 0.65;
+}
+
 .karte-ort {
   font-size: 0.8rem;
   color: var(--grau);

@@ -1,0 +1,127 @@
+{
+  "_hinweis": "Verifiziertes Filialverzeichnis der Handelsketten im 25-km-Umkreis um Breuna. Der Scraper ordnet damit jedem marktguru-Angebot den echten, naechstgelegenen Markt-Standort zu (statt einfach der gesuchten Postleitzahl). 'erkennung' sind Stichwoerter (klein), mit denen der marktguru-Haendlername der Kette zugeordnet wird. 'km' ist die Luftlinien-Entfernung zur Ortsmitte Breuna. Neue Filiale entdeckt? Einfach hier ergaenzen.",
+  "heimatort": "Breuna",
+  "umkreis_km": 25,
+  "_ausserhalb_hinweis": "Ketten, deren Prospekte marktguru fuer die Region liefert, die aber KEINE Filiale im 25-km-Umkreis haben. Deren Angebote werden aussortiert, damit nur erreichbare Maerkte in der App stehen.",
+  "ausserhalb": [
+    { "name": "Combi", "erkennung": ["combi"], "naechste_filiale": "Brakel / Borchen, ueber 30 km" },
+    { "name": "Marktkauf", "erkennung": ["marktkauf"], "naechste_filiale": "Raum Paderborn, ueber 30 km" }
+  ],
+  "ketten": [
+    {
+      "schluessel": "rewe",
+      "name": "REWE",
+      "erkennung": ["rewe"],
+      "filialen": [
+        { "ort": "Breuna", "km": 0.3 },
+        { "ort": "Volkmarsen", "km": 4.7 },
+        { "ort": "Warburg", "km": 9.2 },
+        { "ort": "Bad Arolsen", "km": 12.6 },
+        { "ort": "Habichtswald-Ehlen", "km": 13.1 },
+        { "ort": "Diemelstadt", "km": 14.5 },
+        { "ort": "Warburg-Scherfede", "km": 16.2 },
+        { "ort": "Grebenstein", "km": 16.5 },
+        { "ort": "Hofgeismar", "km": 16.8 }
+      ]
+    },
+    {
+      "schluessel": "nahkauf",
+      "name": "Nahkauf",
+      "erkennung": ["nahkauf"],
+      "filialen": [
+        { "ort": "Zierenberg", "km": 9.5 },
+        { "ort": "Wolfhagen", "km": 10.4 }
+      ]
+    },
+    {
+      "schluessel": "herkules",
+      "name": "Herkules",
+      "erkennung": ["herkules", "e center", "e-center"],
+      "filialen": [
+        { "ort": "Warburg", "km": 9.4 },
+        { "ort": "Wolfhagen", "km": 10.3 },
+        { "ort": "Bad Arolsen", "km": 12.8 },
+        { "ort": "Vellmar", "km": 20.4 }
+      ]
+    },
+    {
+      "schluessel": "edeka",
+      "name": "EDEKA",
+      "erkennung": ["edeka"],
+      "filialen": [
+        { "ort": "Volkmarsen", "km": 4.5 },
+        { "ort": "Zierenberg", "km": 9.0 },
+        { "ort": "Wolfhagen", "km": 10.3 },
+        { "ort": "Bad Arolsen", "km": 12.8 },
+        { "ort": "Calden", "km": 14.6 },
+        { "ort": "Naumburg", "km": 18.1 }
+      ]
+    },
+    {
+      "schluessel": "netto",
+      "name": "Netto Marken-Discount",
+      "erkennung": ["netto"],
+      "filialen": [
+        { "ort": "Warburg", "km": 8.9 },
+        { "ort": "Wolfhagen", "km": 10.0 }
+      ]
+    },
+    {
+      "schluessel": "penny",
+      "name": "PENNY",
+      "erkennung": ["penny"],
+      "filialen": [
+        { "ort": "Habichtswald-Ehlen", "km": 13.1 },
+        { "ort": "Kassel-Jungfernkopf", "km": 19.7 }
+      ]
+    },
+    {
+      "schluessel": "aldi",
+      "name": "ALDI Nord",
+      "erkennung": ["aldi"],
+      "filialen": [
+        { "ort": "Volkmarsen", "km": 5.1 },
+        { "ort": "Zierenberg", "km": 9.0 },
+        { "ort": "Warburg", "km": 9.4 },
+        { "ort": "Wolfhagen", "km": 9.5 },
+        { "ort": "Calden", "km": 14.5 }
+      ]
+    },
+    {
+      "schluessel": "lidl",
+      "name": "Lidl",
+      "erkennung": ["lidl"],
+      "filialen": [
+        { "ort": "Warburg", "km": 9.2 },
+        { "ort": "Wolfhagen", "km": 9.8 },
+        { "ort": "Bad Arolsen-Helsen", "km": 12.9 },
+        { "ort": "Hofgeismar", "km": 17.1 }
+      ]
+    },
+    {
+      "schluessel": "tegut",
+      "name": "tegut",
+      "erkennung": ["tegut"],
+      "filialen": [
+        { "ort": "Wolfhagen", "km": 9.4 },
+        { "ort": "Hofgeismar", "km": 17.2 }
+      ]
+    },
+    {
+      "schluessel": "koenner",
+      "name": "Getränke Könner",
+      "erkennung": ["könner", "koenner", "getränke-quelle", "getraenke-quelle"],
+      "filialen": [
+        { "ort": "Warburg", "km": 9.8 }
+      ]
+    },
+    {
+      "schluessel": "hoffmann",
+      "name": "Getränkemarkt Hoffmann",
+      "erkennung": ["hoffmann"],
+      "filialen": [
+        { "ort": "Zierenberg", "km": 9.9 }
+      ]
+    }
+  ]
+}

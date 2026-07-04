@@ -67,14 +67,22 @@ Alle Einstellungen stecken in zwei Dateien im Ordner `data/`:
 
 **`data/config.json`** – die Orte / Postleitzahlen, in denen gesucht wird.
 Neue Postleitzahl einfach in die Liste ergänzen, dann deckt der Bierradar
-auch dort die Angebote ab. Aktuell: Breuna, Volkmarsen, Warburg, Wolfhagen
-(zusammen rund 20 km um Breuna).
+auch dort die Angebote ab. Aktuell: 12 Orte von Breuna bis Hofgeismar
+(zusammen der 25-km-Umkreis um Breuna).
 
 **`data/biere.json`** – die beobachteten Biersorten. Weitere Sorten lassen
 sich ergänzen. Pro Bier gibt es:
 - `suchbegriffe` – was bei marktguru gesucht wird
 - `aliase` – Stichwörter (klein), mit denen geprüft wird, ob ein gefundenes
   Angebot wirklich zum Bier passt
+
+**`data/maerkte.json`** – das verifizierte Filialverzeichnis der
+Handelsketten im 25-km-Umkreis. Daraus ermittelt der Scraper den echten,
+nächstgelegenen Standort jedes Angebots (die App sortiert danach: Breuna
+bzw. der nächste Ort steht immer oben). Meldet das Actions-Protokoll einen
+„Händler ohne Eintrag im Filialverzeichnis", einfach die Kette hier
+ergänzen. Ketten ohne Filiale im Umkreis (z. B. Combi) stehen unter
+`ausserhalb` und werden aussortiert.
 
 Nach dem Speichern auf GitHub läuft der Scraper automatisch neu.
 

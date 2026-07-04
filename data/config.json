@@ -1,12 +1,20 @@
 {
   "_hinweis": "Zentrale Einstellungen fuer den Bierradar. Die Angebote werden ueber das Prospekt-Portal marktguru.de bezogen - eine einzige Quelle fuer alle Maerkte der Umgebung.",
   "heimatort": "Breuna",
+  "umkreis_km": 25,
   "postleitzahlen": [
-    { "plz": "34479", "ort": "Breuna" },
-    { "plz": "34471", "ort": "Volkmarsen" },
-    { "plz": "34414", "ort": "Warburg" },
-    { "plz": "34466", "ort": "Wolfhagen" }
+    { "plz": "34479", "ort": "Breuna", "km": 0 },
+    { "plz": "34471", "ort": "Volkmarsen", "km": 5 },
+    { "plz": "34289", "ort": "Zierenberg", "km": 9 },
+    { "plz": "34414", "ort": "Warburg", "km": 9 },
+    { "plz": "34466", "ort": "Wolfhagen", "km": 10 },
+    { "plz": "34454", "ort": "Bad Arolsen", "km": 13 },
+    { "plz": "34317", "ort": "Habichtswald", "km": 13 },
+    { "plz": "34474", "ort": "Diemelstadt", "km": 15 },
+    { "plz": "34379", "ort": "Calden", "km": 15 },
+    { "plz": "34393", "ort": "Grebenstein", "km": 17 },
+    { "plz": "34369", "ort": "Hofgeismar", "km": 17 },
+    { "plz": "34311", "ort": "Naumburg", "km": 18 }
   ],
-  "_plz_hinweis": "marktguru liefert Angebote rund um eine Postleitzahl. Mehrere PLZ decken den ~20-km-Umkreis um Breuna ab. Weitere Orte koennen hier ergaenzt werden.",
-  "umkreis_km": 20
+  "_plz_hinweis": "marktguru liefert Angebote rund um eine Postleitzahl. Diese PLZ-Liste deckt den 25-km-Umkreis um Breuna ab. 'km' ist die ungefaehre Luftlinien-Entfernung der Ortsmitte zu Breuna und dient als Rueckfallwert, falls eine Handelskette nicht im Filialverzeichnis (data/maerkte.json) steht."
 }

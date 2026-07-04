@@ -38,11 +38,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 CONFIG_FILE = os.path.join(DATA_DIR, "config.json")
 BIERE_FILE = os.path.join(DATA_DIR, "biere.json")
+MAERKTE_FILE = os.path.join(DATA_DIR, "maerkte.json")
 OUTPUT_FILE = os.path.join(DATA_DIR, "angebote.json")
 
-TZ = timezone(timedelta(hours=2))   # deutsche Sommerzeit (vereinfacht)
+# Echte deutsche Zeitzone (beruecksichtigt Sommer-/Winterzeit),
+# mit fester +2 als Rueckfallebene, falls Zeitzonendaten fehlen.
+try:
+    from zoneinfo import ZoneInfo
+    TZ = ZoneInfo("Europe/Berlin")
+except Exception:
+    TZ = timezone(timedelta(hours=2))
+
 TIMEOUT = 25
-PAUSE = 0.6                          # kurze Pause zwischen Abfragen (hoeflich)
+PAUSE = 0.4                          # kurze Pause zwischen Abfragen (hoeflich)
 
 MARKTGURU_BASIS = "https://www.marktguru.de"
 MARKTGURU_API = "https://api.marktguru.de/api/v1/offers/search"
@@ -285,7 +293,61 @@ def analysiere_gebinde(titel, preis_str):
     return ergebnis
 
 
-def baue_angebot(angebot, bier, plz_ort):
+def finde_kette(haendlername, ketten):
+    """
+    Ordnet einen marktguru-Haendlernamen (z.B. 'Netto Marken-Discount')
+    einer Kette aus data/maerkte.json zu. Gibt den Ketten-Eintrag zurueck
+    oder None, wenn die Kette nicht im Filialverzeichnis steht.
+    """
+    name = str(haendlername or "").lower()
+    for kette in ketten:
+        for stichwort in kette.get("erkennung", []):
+            if stichwort in name:
+                return kette
+    return None
+
+
+def ist_ausserhalb(haendlername, ausserhalb):
+    """
+    Prueft, ob der Haendler laut Verzeichnis KEINE Filiale im Umkreis hat
+    (z.B. Combi - naechste Filiale ueber 30 km entfernt). marktguru liefert
+    auch Prospekte solcher Ketten; deren Angebote werden aussortiert.
+    """
+    name = str(haendlername or "").lower()
+    for eintrag in ausserhalb:
+        for stichwort in eintrag.get("erkennung", []):
+            if stichwort in name:
+                return True
+    return False
+
+
+def ordne_standort_zu(haendlername, ketten, plz_ort, plz_km):
+    """
+    Liefert (markt_ort, entfernung_km, weitere_orte, verifiziert) fuer
+    ein Angebot.
+
+    WICHTIG - das behebt den frueheren Orts-Fehler:
+    marktguru-Angebote gelten kettenweit fuer eine ganze Region. Frueher
+    wurde als Marktort einfach der Ort der gesuchten Postleitzahl
+    eingetragen - dadurch stand z.B. 'Netto, Breuna' in der App, obwohl
+    es in Breuna gar keinen Netto gibt. Jetzt wird der Ort aus dem
+    verifizierten Filialverzeichnis (data/maerkte.json) ermittelt:
+    Es zaehlt die tatsaechlich naechstgelegene Filiale der Kette.
+    """
+    kette = finde_kette(haendlername, ketten)
+    if kette and kette.get("filialen"):
+        filialen = sorted(kette["filialen"], key=lambda f: f.get("km", 9999))
+        naechste = filialen[0]
+        weitere = [f["ort"] for f in filialen[1:4]]
+        return naechste["ort"], naechste.get("km"), weitere, True
+
+    # Kette unbekannt: Als Rueckfallwert den Ort der Such-PLZ nutzen,
+    # aber klar als ungeprueft kennzeichnen. Solche Haendler werden im
+    # Protokoll gemeldet, damit sie in maerkte.json ergaenzt werden koennen.
+    return "Region " + str(plz_ort), plz_km, [], False
+
+
+def baue_angebot(angebot, bier, plz_ort, ketten=None, plz_km=None):
     """Formt einen marktguru-Treffer in unser einheitliches Format um."""
     # Haendlername steht je nach Antwort unter advertisers[0].name
     haendler = "Markt unbekannt"
@@ -304,17 +366,31 @@ def baue_angebot(angebot, bier, plz_ort):
     titel = angebot.get("description") or angebot.get("title") or bier["name"]
     titel = str(titel).strip()
 
-    # Gueltigkeit
+    # Gueltigkeit - marktguru liefert das Enddatum je nach Angebot in
+    # unterschiedlichen Feldern. Frueher wurde nur validityEndDate/validTo
+    # geprueft, wodurch fast alle Angebote ohne 'gueltig bis' blieben.
     gueltig_bis = angebot.get("validityEndDate") or angebot.get("validTo")
+    if not gueltig_bis:
+        vd = angebot.get("validityDates")
+        if isinstance(vd, list) and vd and isinstance(vd[0], dict):
+            gueltig_bis = (vd[0].get("to") or vd[0].get("endDate")
+                           or vd[0].get("end"))
 
     # Gebinde aus dem Titel analysieren (Anzahl, Groesse, Typ, Literpreis)
     gebinde = analysiere_gebinde(titel, preis)
+
+    # Echten Standort ueber das Filialverzeichnis ermitteln
+    markt_ort, entfernung_km, weitere_orte, verifiziert = ordne_standort_zu(
+        haendler, ketten or [], plz_ort, plz_km)
 
     return {
         "bier_id": bier["id"],
         "bier_name": bier["name"],
         "markt_name": haendler,
-        "markt_ort": plz_ort,
+        "markt_ort": markt_ort,
+        "entfernung_km": entfernung_km,
+        "weitere_orte": weitere_orte,
+        "ort_verifiziert": verifiziert,
         "titel": titel,
         "preis": preis,
         "gueltig_bis": gueltig_bis,
@@ -364,7 +440,22 @@ def main():
     biere = lade_json(BIERE_FILE)["biere"]
     plz_liste = config["postleitzahlen"]
 
+    # Verifiziertes Filialverzeichnis fuer die Standort-Zuordnung.
+    # Fehlt die Datei, laeuft der Scraper trotzdem (mit PLZ-Rueckfall).
+    try:
+        maerkte = lade_json(MAERKTE_FILE)
+        ketten = maerkte["ketten"]
+        ausserhalb = maerkte.get("ausserhalb", [])
+        print(f"Filialverzeichnis geladen: {len(ketten)} Ketten, "
+              f"{len(ausserhalb)} ausgeschlossene.")
+    except Exception as e:
+        ketten = []
+        ausserhalb = []
+        print(f"WARNUNG: Filialverzeichnis nicht lesbar ({e}) - "
+              f"Orte werden ungeprueft aus der Such-PLZ uebernommen.")
+
     fehler_global = []
+    unbekannte_haendler = set()
 
     # 1) API-Schluessel holen
     try:
@@ -384,6 +475,7 @@ def main():
             for plz_eintrag in plz_liste:
                 plz = plz_eintrag["plz"]
                 ort = plz_eintrag["ort"]
+                plz_km = plz_eintrag.get("km")
                 try:
                     treffer = suche_angebote(begriff, plz, clientkey, apikey)
                     passend = [t for t in treffer if passt_zum_bier(t, bier)]
@@ -391,10 +483,16 @@ def main():
                     # Einzelflaschen interessieren uns nicht.
                     kaesten = 0
                     for t in passend:
-                        angebot = baue_angebot(t, bier, ort)
-                        if ist_kasten(angebot):
-                            alle_angebote.append(angebot)
-                            kaesten += 1
+                        angebot = baue_angebot(t, bier, ort, ketten, plz_km)
+                        if not ist_kasten(angebot):
+                            continue
+                        # Ketten ohne Filiale im 25-km-Umkreis aussortieren
+                        if ist_ausserhalb(angebot["markt_name"], ausserhalb):
+                            continue
+                        alle_angebote.append(angebot)
+                        kaesten += 1
+                        if not angebot["ort_verifiziert"]:
+                            unbekannte_haendler.add(angebot["markt_name"])
                     print(f"   '{begriff}' @ {plz} ({ort}): "
                           f"{kaesten} Kaesten von {len(passend)} passenden "
                           f"({len(treffer)} Treffer)")
@@ -404,13 +502,40 @@ def main():
                     fehler_global.append(msg)
                 time.sleep(PAUSE)
 
-    # 3) Duplikate entfernen (gleiches Bier + Markt + Titel)
+    # 3) Duplikate entfernen (gleiches Bier + Markt + Titel).
+    #    Dasselbe kettenweite Angebot taucht bei mehreren PLZ-Suchen auf -
+    #    behalten wird der Eintrag mit der kuerzesten Entfernung zu Breuna.
     eindeutig = {}
     for a in alle_angebote:
         key = (a["bier_id"], a["markt_name"], a["titel"])
-        if key not in eindeutig:
+        alt = eindeutig.get(key)
+        if alt is None:
             eindeutig[key] = a
+        else:
+            neu_km = a["entfernung_km"] if a["entfernung_km"] is not None else 9999
+            alt_km = alt["entfernung_km"] if alt["entfernung_km"] is not None else 9999
+            if neu_km < alt_km:
+                eindeutig[key] = a
     ergebnis_liste = list(eindeutig.values())
+
+    # Naechster Ort zuerst (Breuna ganz oben), bei gleicher Entfernung
+    # der guenstigere Literpreis.
+    def sortier_km(a):
+        return a["entfernung_km"] if a["entfernung_km"] is not None else 9999
+
+    def sortier_liter(a):
+        try:
+            return float(str(a.get("preis_pro_liter") or "").replace(",", "."))
+        except ValueError:
+            return 9999.0
+
+    ergebnis_liste.sort(key=lambda a: (sortier_km(a), sortier_liter(a)))
+
+    if unbekannte_haendler:
+        print("\nHinweis - Haendler ohne Eintrag im Filialverzeichnis "
+              "(bitte bei Gelegenheit in data/maerkte.json ergaenzen):")
+        for h in sorted(unbekannte_haendler):
+            print(f"   - {h}")
 
     schreibe_ergebnis(ergebnis_liste, fehler_global)
     print(f"\n=== Fertig: {len(ergebnis_liste)} Angebote geschrieben ===")

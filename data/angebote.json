@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-07-08T09:22:47.886581+02:00",
+  "stand": "2026-07-10T10:16:07.683447+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -34,7 +34,7 @@
         "Wolfhagen"
       ],
       "ort_verifiziert": true,
-      "titel": "oder Helles Alkoholfrei 20 x 0,5 l zzgl. Pfand 3.10",
+      "titel": "oder Helles Alkoholfrei 20 x 0,5 Liter zzgl. Pfand 3.10",
       "preis": "14,99",
       "gueltig_bis": "2026-07-11T21:59:00Z",
       "gebinde_typ": "Kasten",

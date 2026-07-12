@@ -1,22 +1,68 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-07-11T09:05:46.216572+02:00",
+  "stand": "2026-07-12T09:25:04.871647+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
     {
-      "bier_id": "moenchshof",
-      "bier_name": "Mönchshof Hell",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
+      "bier_id": "veltins",
+      "bier_name": "Veltins",
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
+      "entfernung_km": 0.3,
       "weitere_orte": [
-        "Wolfhagen"
+        "Volkmarsen",
+        "Warburg",
+        "Bad Arolsen"
       ],
       "ort_verifiziert": true,
-      "titel": "Zitrone oder Blutorange 20 x 0,5 l zzgl. Pfand 4.50",
+      "titel": "je 20 x 0,5-l-Fl.-Kasten zzgl. 3.10 Pfand",
+      "preis": "10,49",
+      "gueltig_bis": "2026-07-18T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,05",
+      "quelle": "marktguru"
+    },
+    {
+      "bier_id": "veltins",
+      "bier_name": "Veltins",
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
+      "entfernung_km": 0.3,
+      "weitere_orte": [
+        "Volkmarsen",
+        "Warburg",
+        "Bad Arolsen"
+      ],
+      "ort_verifiziert": true,
+      "titel": "je 24 x 0,33-/20 x 0,5-l-Fl.-Kasten zzgl. 3.42/3.10 Pfand",
+      "preis": "10,49",
+      "gueltig_bis": "2026-07-18T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 24,
+      "einzelgroesse_l": 0.33,
+      "gesamt_l": 7.92,
+      "preis_pro_liter": "1,32",
+      "quelle": "marktguru"
+    },
+    {
+      "bier_id": "moenchshof",
+      "bier_name": "Mönchshof Hell",
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
+      "entfernung_km": 0.3,
+      "weitere_orte": [
+        "Volkmarsen",
+        "Warburg",
+        "Bad Arolsen"
+      ],
+      "ort_verifiziert": true,
+      "titel": "versch. Sorten, auch alkoholfrei, je 20 x 0,5-l-Fl.-Kasten zzgl. 4.50 Pfand",
       "preis": "13,99",
-      "gueltig_bis": "2026-07-11T21:59:00Z",
+      "gueltig_bis": "2026-07-18T21:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.5,
@@ -27,16 +73,18 @@
     {
       "bier_id": "erdinger",
       "bier_name": "Erdinger Weißbier",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
+      "entfernung_km": 0.3,
       "weitere_orte": [
-        "Wolfhagen"
+        "Volkmarsen",
+        "Warburg",
+        "Bad Arolsen"
       ],
       "ort_verifiziert": true,
-      "titel": "oder Helles Alkoholfrei 20 x 0,5 Liter zzgl. Pfand 3.10",
+      "titel": "oder Weißbier je 20 x 0,5-l-Fl.-Kasten  zzgl. 3.10 + 0.16 Pfand",
       "preis": "14,99",
-      "gueltig_bis": "2026-07-11T21:59:00Z",
+      "gueltig_bis": "2026-07-18T21:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.5,
@@ -47,21 +95,61 @@
     {
       "bier_id": "veltins",
       "bier_name": "Veltins",
-      "markt_name": "PENNY",
-      "markt_ort": "Habichtswald-Ehlen",
-      "entfernung_km": 13.1,
+      "markt_name": "Netto Marken-Discount",
+      "markt_ort": "Warburg",
+      "entfernung_km": 8.9,
       "weitere_orte": [
-        "Kassel-Jungfernkopf"
+        "Wolfhagen"
       ],
       "ort_verifiziert": true,
-      "titel": "Zzgl. 4.50 Pfand, je 18 x 0,33 l",
-      "preis": "8,88",
-      "gueltig_bis": "2026-07-11T21:59:00Z",
+      "titel": "20 x 0,33 Liter zzgl. Pfand 3.10 pro Kiste, 2 Kisten 9.99, ab 3 Kisten 9.49",
+      "preis": "10,49",
+      "gueltig_bis": "2026-07-18T21:59:00Z",
       "gebinde_typ": "Kasten",
-      "anzahl": 18,
+      "anzahl": 20,
       "einzelgroesse_l": 0.33,
-      "gesamt_l": 5.94,
-      "preis_pro_liter": "1,49",
+      "gesamt_l": 6.6,
+      "preis_pro_liter": "1,59",
+      "quelle": "marktguru"
+    },
+    {
+      "bier_id": "veltins",
+      "bier_name": "Veltins",
+      "markt_name": "Netto Marken-Discount",
+      "markt_ort": "Warburg",
+      "entfernung_km": 8.9,
+      "weitere_orte": [
+        "Wolfhagen"
+      ],
+      "ort_verifiziert": true,
+      "titel": "24 x 0,33 Liter zzgl. Pfand 3.42",
+      "preis": "14,99",
+      "gueltig_bis": "2026-07-18T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 24,
+      "einzelgroesse_l": 0.33,
+      "gesamt_l": 7.92,
+      "preis_pro_liter": "1,89",
+      "quelle": "marktguru"
+    },
+    {
+      "bier_id": "veltins",
+      "bier_name": "Veltins",
+      "markt_name": "nahkauf",
+      "markt_ort": "Zierenberg",
+      "entfernung_km": 9.5,
+      "weitere_orte": [
+        "Wolfhagen"
+      ],
+      "ort_verifiziert": true,
+      "titel": "je 20 x 0,5-l-Fl.-Kasten zzgl. 3.10 Pfand",
+      "preis": "10,49",
+      "gueltig_bis": "2026-07-18T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,05",
       "quelle": "marktguru"
     }
   ]

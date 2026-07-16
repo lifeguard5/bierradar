@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-07-15T09:06:24.981227+02:00",
+  "stand": "2026-07-16T09:14:39.729073+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -102,7 +102,7 @@
         "Wolfhagen"
       ],
       "ort_verifiziert": true,
-      "titel": "20 x 0,33 Liter zzgl. Pfand 3.10 pro Kiste, 2 Kisten 9.99, ab 3 Kisten 9.49",
+      "titel": "20 x 0,33 Liter zzgl. Pfand 3.10 pro Kiste  2 Kisten pro Kiste 9.99 ab 3 Kisten  pro Kiste 9.49",
       "preis": "10,49",
       "gueltig_bis": "2026-07-18T21:59:00Z",
       "gebinde_typ": "Kasten",
@@ -122,7 +122,7 @@
         "Wolfhagen"
       ],
       "ort_verifiziert": true,
-      "titel": "24 x 0,33 Liter zzgl. Pfand 3.42",
+      "titel": "24 x 0,33 l zzgl. Pfand 3.42",
       "preis": "14,99",
       "gueltig_bis": "2026-07-18T21:59:00Z",
       "gebinde_typ": "Kasten",

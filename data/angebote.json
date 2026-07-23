@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-07-22T09:29:53.436199+02:00",
+  "stand": "2026-07-23T09:27:31.107537+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -22,66 +22,6 @@
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
       "preis_pro_liter": "0,80",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "20 x 0,5 / 24 x 0,33 l zzgl. Pfand 3.10 / 3.42",
-      "preis": "10,99",
-      "gueltig_bis": "2026-07-25T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,10",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "moenchshof",
-      "bier_name": "Mönchshof Hell",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "20 x 0,5 l versch. Sorten zzgl. Pfand 4.50",
-      "preis": "13,99",
-      "gueltig_bis": "2026-07-25T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,40",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "erdinger",
-      "bier_name": "Erdinger Weißbier",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "HINWEIS: MIT NETTO PLUS APP 8.44 € 11 x 0,5 l oder Alkoholfrei zzgl. Pfand 2.38",
-      "preis": "8,99",
-      "gueltig_bis": "2026-07-25T21:59:00Z",
-      "gebinde_typ": "Mehrpack",
-      "anzahl": 11,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 5.5,
-      "preis_pro_liter": "1,63",
       "quelle": "marktguru"
     }
   ]

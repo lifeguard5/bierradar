@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-08-12T08:07:38.306052+02:00",
+  "stand": "2026-08-13T08:09:44.300082+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -110,26 +110,6 @@
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
       "preis_pro_liter": "1,05",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "moenchshof",
-      "bier_name": "Mönchshof Hell",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "20 x 0,5 l zzgl. Pfand 4.50",
-      "preis": "13,99",
-      "gueltig_bis": "2026-08-15T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,40",
       "quelle": "marktguru"
     },
     {

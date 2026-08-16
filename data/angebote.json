@@ -1,100 +1,12 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-08-15T07:15:57.019948+02:00",
+  "stand": "2026-08-16T07:18:28.695460+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
     {
       "bier_id": "veltins",
       "bier_name": "Veltins",
-      "markt_name": "REWE",
-      "markt_ort": "Breuna",
-      "entfernung_km": 0.3,
-      "weitere_orte": [
-        "Volkmarsen",
-        "Warburg",
-        "Bad Arolsen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "je 20 x 0,5-l-Fl.-Kasten zzgl. 3.10 Pfand",
-      "preis": "10,99",
-      "gueltig_bis": "2026-08-15T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,10",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "REWE",
-      "markt_ort": "Breuna",
-      "entfernung_km": 0.3,
-      "weitere_orte": [
-        "Volkmarsen",
-        "Warburg",
-        "Bad Arolsen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "je 24 x 0,33/20 x 0,5-l-Fl.-Kasten zzgl. 3.42/3.10 Pfand",
-      "preis": "10,99",
-      "gueltig_bis": "2026-08-15T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 24,
-      "einzelgroesse_l": 0.33,
-      "gesamt_l": 7.92,
-      "preis_pro_liter": "1,39",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "REWE",
-      "markt_ort": "Breuna",
-      "entfernung_km": 0.3,
-      "weitere_orte": [
-        "Volkmarsen",
-        "Warburg",
-        "Bad Arolsen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "je 24 x 0,33-l-Fl.-Kasten zzgl. 3.42 Pfand",
-      "preis": "14,99",
-      "gueltig_bis": "2026-08-15T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 24,
-      "einzelgroesse_l": 0.33,
-      "gesamt_l": 7.92,
-      "preis_pro_liter": "1,89",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "REWE",
-      "markt_ort": "Breuna",
-      "entfernung_km": 0.3,
-      "weitere_orte": [
-        "Volkmarsen",
-        "Warburg",
-        "Bad Arolsen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "je 24 x 0,33-l-Fl.-Kasten  zzgl. 3.42 Pfand",
-      "preis": "14,99",
-      "gueltig_bis": "2026-08-15T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 24,
-      "einzelgroesse_l": 0.33,
-      "gesamt_l": 7.92,
-      "preis_pro_liter": "1,89",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
       "markt_name": "Netto Marken-Discount",
       "markt_ort": "Warburg",
       "entfernung_km": 8.9,
@@ -102,34 +14,14 @@
         "Wolfhagen"
       ],
       "ort_verifiziert": true,
-      "titel": "20 x 0,5 Liter / 24 x 0,33 Liter zzgl. Pfand 3.10 / 3.42",
-      "preis": "10,49",
-      "gueltig_bis": "2026-08-15T21:59:00Z",
+      "titel": "24 x 0,33 l zzgl. Pfand 3.42",
+      "preis": "12,99",
+      "gueltig_bis": "2026-08-22T21:59:00Z",
       "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,05",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "erdinger",
-      "bier_name": "Erdinger Weißbier",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "11 x 0,5 l Hell oder Alkoholfrei zzgl. Pfand 2.38",
-      "preis": "8,99",
-      "gueltig_bis": "2026-08-15T21:59:00Z",
-      "gebinde_typ": "Mehrpack",
-      "anzahl": 11,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 5.5,
-      "preis_pro_liter": "1,63",
+      "anzahl": 24,
+      "einzelgroesse_l": 0.33,
+      "gesamt_l": 7.92,
+      "preis_pro_liter": "1,64",
       "quelle": "marktguru"
     }
   ]

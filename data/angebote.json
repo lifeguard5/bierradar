@@ -1,9 +1,31 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-08-17T07:26:14.138553+02:00",
+  "stand": "2026-08-18T07:19:28.585847+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
+    {
+      "bier_id": "erdinger",
+      "bier_name": "Erdinger Weißbier",
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
+      "entfernung_km": 0.3,
+      "weitere_orte": [
+        "Volkmarsen",
+        "Warburg",
+        "Bad Arolsen"
+      ],
+      "ort_verifiziert": true,
+      "titel": "oder Brauhas auch alkoholfrei, je 20 x 0,5-l-Fl.-Kasten zzgl. 3.10 Pfand",
+      "preis": "13,99",
+      "gueltig_bis": "2026-08-22T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,40",
+      "quelle": "marktguru"
+    },
     {
       "bier_id": "veltins",
       "bier_name": "Veltins",

@@ -1,27 +1,51 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-09-05T10:42:26.769927+02:00",
+  "stand": "2026-09-06T11:02:03.554664+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
     {
       "bier_id": "veltins",
       "bier_name": "Veltins",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
+      "entfernung_km": 0.3,
       "weitere_orte": [
-        "Wolfhagen"
+        "Volkmarsen",
+        "Warburg",
+        "Bad Arolsen"
       ],
       "ort_verifiziert": true,
-      "titel": "20 x 0,5 / 24 x 0,33 l zzgl. Pfand 3.10 / 3.42",
-      "preis": "10,99",
-      "gueltig_bis": "2026-09-05T21:59:00Z",
+      "titel": "je 20 x 0,5-l-Fl.-Kasten zzgl. 3.10 + 0.50 Pfand",
+      "preis": "11,99",
+      "gueltig_bis": "2026-09-12T21:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
-      "preis_pro_liter": "1,10",
+      "preis_pro_liter": "1,20",
+      "quelle": "marktguru"
+    },
+    {
+      "bier_id": "erdinger",
+      "bier_name": "Erdinger Weißbier",
+      "markt_name": "REWE",
+      "markt_ort": "Breuna",
+      "entfernung_km": 0.3,
+      "weitere_orte": [
+        "Volkmarsen",
+        "Warburg",
+        "Bad Arolsen"
+      ],
+      "ort_verifiziert": true,
+      "titel": "auch alkoholfrei, je 20 x 0,5-l-Fl.-Kasten zzgl. 3.10 Pfand",
+      "preis": "14,99",
+      "gueltig_bis": "2026-09-12T21:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,50",
       "quelle": "marktguru"
     },
     {
@@ -34,34 +58,14 @@
         "Wolfhagen"
       ],
       "ort_verifiziert": true,
-      "titel": "Hell oder Alkoholfrei 11 x 0,5 Liter zzgl. Pfand 2.38",
-      "preis": "8,99",
-      "gueltig_bis": "2026-09-05T21:59:00Z",
-      "gebinde_typ": "Mehrpack",
-      "anzahl": 11,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 5.5,
-      "preis_pro_liter": "1,63",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "PENNY",
-      "markt_ort": "Habichtswald-Ehlen",
-      "entfernung_km": 13.1,
-      "weitere_orte": [
-        "Kassel-Jungfernkopf"
-      ],
-      "ort_verifiziert": true,
-      "titel": "Zzgl. 3.42 Pfand, je 24 x 0,33 l",
-      "preis": "10,99",
-      "gueltig_bis": "2026-09-05T21:59:00Z",
+      "titel": "oder Helles Alkoholfrei 20 x 0,5 Liter zzgl. Pfand 3.10",
+      "preis": "14,99",
+      "gueltig_bis": "2026-09-12T21:59:00Z",
       "gebinde_typ": "Kasten",
-      "anzahl": 24,
-      "einzelgroesse_l": 0.33,
-      "gesamt_l": 7.92,
-      "preis_pro_liter": "1,39",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,50",
       "quelle": "marktguru"
     }
   ]

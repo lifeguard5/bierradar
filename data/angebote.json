@@ -1,72 +1,7 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-10-02T12:48:03.706489+02:00",
+  "stand": "2026-10-03T12:07:57.387978+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
-  "angebote": [
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "REWE",
-      "markt_ort": "Breuna",
-      "entfernung_km": 0.3,
-      "weitere_orte": [
-        "Volkmarsen",
-        "Warburg",
-        "Bad Arolsen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "je 20 x 0,5-l-Fl.-Kasten zzgl. 3.10 Pfand",
-      "preis": "11,77",
-      "gueltig_bis": "2026-10-02T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,18",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "REWE",
-      "markt_ort": "Breuna",
-      "entfernung_km": 0.3,
-      "weitere_orte": [
-        "Volkmarsen",
-        "Warburg",
-        "Bad Arolsen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "je 24 x 0,33/20 x 0,5-l-Fl.-Kasten zzgl. 3.42/3.10 Pfand",
-      "preis": "11,77",
-      "gueltig_bis": "2026-10-02T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 24,
-      "einzelgroesse_l": 0.33,
-      "gesamt_l": 7.92,
-      "preis_pro_liter": "1,49",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "PENNY",
-      "markt_ort": "Habichtswald-Ehlen",
-      "entfernung_km": 13.1,
-      "weitere_orte": [
-        "Kassel-Jungfernkopf"
-      ],
-      "ort_verifiziert": true,
-      "titel": "Zzgl. 3.42 Pfand, je 24 x 0,33 l",
-      "preis": "10,99",
-      "gueltig_bis": "2026-10-02T21:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 24,
-      "einzelgroesse_l": 0.33,
-      "gesamt_l": 7.92,
-      "preis_pro_liter": "1,39",
-      "quelle": "marktguru"
-    }
-  ]
+  "angebote": []
 }

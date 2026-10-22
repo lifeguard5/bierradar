@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-10-21T11:44:45.285278+02:00",
+  "stand": "2026-10-22T11:43:58.712138+02:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -58,7 +58,7 @@
         "Wolfhagen"
       ],
       "ort_verifiziert": true,
-      "titel": "HINWEIS: MIT NETTO APP 7.49 €  20 x 0,5 / 24 x 0,33 Liter zzgl. Pfand 3.10 / 3.42",
+      "titel": "HINWEIS: MIT NETTO APP 7.49 €  20 x 0,5 l zzgl. Pfand 3.10",
       "preis": "8,49",
       "gueltig_bis": "2026-10-24T21:59:00Z",
       "gebinde_typ": "Kasten",

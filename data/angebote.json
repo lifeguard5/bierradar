@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-10-25T10:29:50.195647+01:00",
+  "stand": "2026-10-26T11:38:05.929760+01:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -82,7 +82,7 @@
       "ort_verifiziert": true,
       "titel": "oder Alkoholfrei 0,0% 20 x 0,5 / 24 x 0,33 l zzgl. Pfand 3.10 / 3.42",
       "preis": "10,99",
-      "gueltig_bis": "2026-10-30T22:59:00Z",
+      "gueltig_bis": "2026-10-31T22:59:00Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.5,

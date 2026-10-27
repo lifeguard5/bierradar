@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-10-26T11:38:05.929760+01:00",
+  "stand": "2026-10-27T11:07:15.921164+01:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -68,6 +68,28 @@
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
       "preis_pro_liter": "1,40",
+      "quelle": "marktguru"
+    },
+    {
+      "bier_id": "erdinger",
+      "bier_name": "Erdinger Weißbier",
+      "markt_name": "EDEKA",
+      "markt_ort": "Volkmarsen",
+      "entfernung_km": 4.5,
+      "weitere_orte": [
+        "Zierenberg",
+        "Wolfhagen",
+        "Bad Arolsen"
+      ],
+      "ort_verifiziert": true,
+      "titel": "versch. Sorten, + 3,10 Pfand 20x0,5l Flasche",
+      "preis": "15,99",
+      "gueltig_bis": "2026-10-31T22:59:00Z",
+      "gebinde_typ": "Kasten",
+      "anzahl": 20,
+      "einzelgroesse_l": 0.5,
+      "gesamt_l": 10.0,
+      "preis_pro_liter": "1,60",
       "quelle": "marktguru"
     },
     {

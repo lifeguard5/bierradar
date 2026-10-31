@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-10-30T12:05:49.016447+01:00",
+  "stand": "2026-10-31T11:40:07.428801+01:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -90,26 +90,6 @@
       "einzelgroesse_l": 0.5,
       "gesamt_l": 10.0,
       "preis_pro_liter": "1,60",
-      "quelle": "marktguru"
-    },
-    {
-      "bier_id": "veltins",
-      "bier_name": "Veltins",
-      "markt_name": "Netto Marken-Discount",
-      "markt_ort": "Warburg",
-      "entfernung_km": 8.9,
-      "weitere_orte": [
-        "Wolfhagen"
-      ],
-      "ort_verifiziert": true,
-      "titel": "oder Alkoholfrei 0,0% 20 x 0,5 / 24 x 0,33 l zzgl. Pfand 3.10 / 3.42",
-      "preis": "10,99",
-      "gueltig_bis": "2026-10-30T22:59:00Z",
-      "gebinde_typ": "Kasten",
-      "anzahl": 20,
-      "einzelgroesse_l": 0.5,
-      "gesamt_l": 10.0,
-      "preis_pro_liter": "1,10",
       "quelle": "marktguru"
     },
     {

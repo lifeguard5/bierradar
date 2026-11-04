@@ -1,6 +1,6 @@
 {
   "_hinweis": "Automatisch erzeugt vom Bierradar-Scraper. Quelle: marktguru.de. Nicht von Hand bearbeiten.",
-  "stand": "2026-11-03T13:28:56.358384+01:00",
+  "stand": "2026-11-04T13:40:24.640773+01:00",
   "quelle": "marktguru.de",
   "fehler": [],
   "angebote": [
@@ -16,7 +16,7 @@
       "ort_verifiziert": true,
       "titel": "20 x 0,33 Liter zzgl. Pfand 3.10",
       "preis": "9,99",
-      "gueltig_bis": "2026-11-07T22:59:00Z",
+      "gueltig_bis": "2026-11-07T22:59:59Z",
       "gebinde_typ": "Kasten",
       "anzahl": 20,
       "einzelgroesse_l": 0.33,
@@ -36,7 +36,7 @@
       "ort_verifiziert": true,
       "titel": "24 x 0,33 l zzgl. Pfand 3.42",
       "preis": "14,99",
-      "gueltig_bis": "2026-11-07T22:59:00Z",
+      "gueltig_bis": "2026-11-07T22:59:59Z",
       "gebinde_typ": "Kasten",
       "anzahl": 24,
       "einzelgroesse_l": 0.33,
